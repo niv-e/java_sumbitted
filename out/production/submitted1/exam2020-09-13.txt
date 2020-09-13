@@ -1,0 +1,9 @@
+q1:
+the 1 answer is: a1		true
+the 2 answer is: a2		false
+the 3 answer is: a1		true
+the 4 answer is: a2		false
+the 5 answer is: none of the above		false
+the 6 answer is: More than one answer correctly		false
+
+
