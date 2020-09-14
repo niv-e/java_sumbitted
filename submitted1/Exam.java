@@ -1,16 +1,22 @@
 package submitted1;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class Exam {
-    Vector<Question> allQuestions = new Vector <Question>();
-    int numOfCurrentQuestion=allQuestions.size();
-    int numOfQuestion;
+    
+	private Vector<Question> allQuestions = new Vector<Question>();
+    private int numOfCurrentQuestion = allQuestions.size();
+    
+
+	private int numOfQuestion;
     Scanner s = new Scanner(System.in);
 
     public Exam(int numOfQuestion){
         this.numOfQuestion = numOfQuestion;
     }
+   
 
 //    public Boolean pickRandomQuestions(int numOfQuestion){
 //
@@ -27,6 +33,10 @@ public class Exam {
         allQuestions.add(new Question(questionText));
         return true;
     }
+    
+    public Vector<Question> getAllQuestions() {
+		return allQuestions;
+	}
 
     public String toString(){
         StringBuilder sb = new StringBuilder();

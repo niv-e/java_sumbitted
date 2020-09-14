@@ -2,21 +2,24 @@ package submitted1;
 
 import exceptions.MaxAnswerException;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Vector;
 
 public class SystemManager {
-    int numOfQuestion=10;
-    int numOfCurrentQuestion;
-    Exam exam;
-    Vector <Question> systemAllQuestions = new Vector <Question>();
+   
+	private final int MAX_NUM_OF_QUESTIONS = 10;
+	private int numOfCurrentQuestion;
+    private Exam exam;
+    private Vector<Question> systemAllQuestions = new Vector<Question>();
 
 
     public SystemManager(){
-        exam = new Exam(numOfQuestion);
+        exam = new Exam(MAX_NUM_OF_QUESTIONS);
     }
 
     public boolean addNewQuestionToExam(String questionText){
-        exam.allQuestions.add(new Question(questionText));
+        exam.getAllQuestions().add(new Question(questionText));
         return true;
     }
 
@@ -27,13 +30,13 @@ public class SystemManager {
 
 
     public boolean updateQuestion(int numOfQuestion , String questionText) throws ArrayIndexOutOfBoundsException{
-        exam.allQuestions.get(numOfQuestion-1).setQuestionText(questionText);
+        exam.getAllQuestions().get(numOfQuestion-1).setQuestionText(questionText);
         return true;
     }
 
     public void deleteQuestion(int questionForDelete) {
-        questionForDelete-=1;
-        exam.allQuestions.remove(questionForDelete);
+        questionForDelete -= 1;
+        exam.getAllQuestions().remove(questionForDelete);
         numOfCurrentQuestion--;
     }
 
@@ -45,9 +48,9 @@ public class SystemManager {
 
     public boolean addQuestionToExam(Exam e ,int questionNumber)  {
         questionNumber-=1;
-        String textToCopy = systemAllQuestions.get(questionNumber).questionText;
+        String textToCopy = systemAllQuestions.get(questionNumber).getQuestionText();
         Question q = new Question(textToCopy);
-        e.allQuestions.add(q);
+        e.getAllQuestions().add(q);
         return true;
     }
 
@@ -61,20 +64,20 @@ public class SystemManager {
         numOfQuestion-=1;
         numOfAnswer-=1;
         boolean currentAnswerRes = getIfTheRightAnswer(numOfQuestion,numOfAnswer);
-        exam.allQuestions.get(numOfQuestion).allAnswers.get(numOfAnswer).setAnswerText(answerText, currentAnswerRes);
+        exam.getAllQuestions().get(numOfQuestion).getAllAnswers().get(numOfAnswer).setAnswerText(answerText, currentAnswerRes);
         return true;
     }
 
     public boolean deleteAnswer(int numOfQuestion, int numOfAnswer){
         numOfQuestion-=1;
         numOfAnswer-=1;
-        exam.allQuestions.get(numOfQuestion).allAnswers.remove(numOfAnswer);
+        exam.getAllQuestions().get(numOfQuestion).getAllAnswers().remove(numOfAnswer);
         return true;
     }
 
     public void showAnswerForSelectedQuestion(int numOfQuestion){
         numOfQuestion-=1;
-        Vector <Answer> tempAnswerList = systemAllQuestions.get(numOfQuestion).allAnswers;
+        Vector <Answer> tempAnswerList = systemAllQuestions.get(numOfQuestion).getAllAnswers();
         for (int i=0; i<tempAnswerList.size() ; i++){
             System.out.println("Answer number " + (i+1) + ":\n"
                 + tempAnswerList.get(i).toString());
@@ -85,25 +88,29 @@ public class SystemManager {
         numOfQuestionFromSystem-=1;
         numOfAnswerToAdd-=1;
 
-        exam.allQuestions.lastElement().addNewAnswer(systemAllQuestions.get(numOfQuestionFromSystem).allAnswers
+        exam.getAllQuestions().lastElement().addNewAnswer(systemAllQuestions.get(numOfQuestionFromSystem).getAllAnswers()
             .get(numOfAnswerToAdd));
         return true;
-
     }
+    
+    public void saveQuestions(PrintWriter pw) throws FileNotFoundException {
+		for(int i = 0; i < systemAllQuestions.size(); i++) {
+			pw.println(systemAllQuestions.get(i));
+			pw.println(systemAllQuestions.get(i).getAllAnswers());
+		}	
+	}
 
     public boolean getIfTheRightAnswer(int numOfQuestion, int numOfAnswer){
-        return exam.allQuestions.get(numOfQuestion-1).allAnswers.get(numOfAnswer-1).isTheAnswer;
+        return exam.getAllQuestions().get(numOfQuestion-1).getAllAnswers().get(numOfAnswer-1).isTheAnswer();
     }
 
-
+    public Vector<Question> getSystemAllQuestions() {
+		return systemAllQuestions;
+	}
 
     public int getNumOfCurrentQuestion(){
         return systemAllQuestions.size();
     }
-
-
-
-
 
     @Override
     public String toString(){

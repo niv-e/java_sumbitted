@@ -6,9 +6,9 @@ import java.util.Scanner;
 
 public class Answer  implements Cloneable  {
 
-	String answerText;
-	boolean isTheAnswer;
-	int answerNumber;
+	private String answerText;
+	private boolean isTheAnswer;
+	private int answerNumber;
 
 	Scanner s = new Scanner(System.in);
 
@@ -21,7 +21,10 @@ public class Answer  implements Cloneable  {
 		this.answerText = answerText;
 		this.isTheAnswer = isTheAnswer;
 	}
-
+	
+	public boolean isTheAnswer() {
+		return isTheAnswer;
+	}
 
 	public boolean getIfTheRightAnswer() {
 		return isTheAnswer;
@@ -30,7 +33,6 @@ public class Answer  implements Cloneable  {
 	public String toString() {
 		return (answerText + "\t\t" + isTheAnswer);
 	}
-
 
 	@Override
 	public boolean equals(Object other){

@@ -6,12 +6,11 @@ import java.util.*;
 
 public class Question implements Cloneable {
 
-	final int MAX_NUMBER_OF_ANSWER = 10;
-	String questionText;
-	Vector <Answer> allAnswers = new Vector <Answer>();
-	int numOfCurrentAnswers =allAnswers.size();
-	boolean rightAnswerExist = false;
-
+	private final int MAX_NUMBER_OF_ANSWER = 10;
+	private String questionText;
+	private Vector<Answer> allAnswers = new Vector <Answer>();
+	private int numOfCurrentAnswers = allAnswers.size();
+	private boolean rightAnswerExist = false;
 
 	Scanner s = new Scanner(System.in);
 
@@ -26,6 +25,10 @@ public class Question implements Cloneable {
 
 	public String getQuestionText() {
 		return questionText;
+	}
+	
+	public Vector<Answer> getAllAnswers() {
+		return allAnswers;
 	}
 
 	public void addNewAnswer(Answer ans) throws MaxAnswerException {
@@ -51,8 +54,8 @@ public class Question implements Cloneable {
 
 
 	public void deleteAnswer(int answerForDelete) {
-		if(allAnswers.get(answerForDelete).isTheAnswer)
-			rightAnswerExist=false;
+		if(allAnswers.get(answerForDelete).isTheAnswer())
+			rightAnswerExist = false;
 		allAnswers.remove(answerForDelete);
 	}
 
@@ -60,12 +63,11 @@ public class Question implements Cloneable {
 		return rightAnswerExist;
 	}
 
-
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(questionText + ":\n");
+		sb.append(questionText + "\n");
 		for (int i = 0; i < allAnswers.size() ; i++)
 			sb.append("the " + (i + 1) + " answer is: " + allAnswers.get(i).toString() +"\n");
 		return sb.toString();
@@ -90,7 +92,8 @@ public class Question implements Cloneable {
 		public int compare(Question q1, Question q2) {
 			if(q1.questionText.equalsIgnoreCase(q2.questionText))
 				return -1;
-			else return 1;
+			else
+				return 1;
 		}
 	}
 

@@ -16,7 +16,7 @@ public class main {
 		Scanner s = new Scanner(System.in);
 		int choice =-1; //menu choice
 		boolean fcountinue = true;
-// shalom
+
 
 		SystemManager systemManager = new SystemManager();
 
@@ -30,6 +30,7 @@ public class main {
 			System.out.println("press 6 to Delete answer to question");
 			System.out.println("press 7 to Delete question (with answers)");
 			System.out.println("press 9 to to move to handle write mood");
+			System.out.println("press 10 to to save all Questions and answers that you have entered");
 			System.out.println("press 0 to Exit");
 			System.out.println("enter your choice-->");
 
@@ -71,7 +72,6 @@ public class main {
 							flag = checkIfToDo();
 						}
 						break;
-
 					}
 
 					case 4: {//press 4 to Update wording of question
@@ -114,11 +114,11 @@ public class main {
 						int questionChoice = s.nextInt();
 
 						systemManager.deleteQuestion(questionChoice);
+						break;
 					}
-					break;
+					
 
 					case 9: {
-
 						System.out.println("how many question you would like to add to the exam?");
 						int numOfQuestionRes = s.nextInt();
 						System.out.println("Please enter the number of the question that you would like to add:");
@@ -129,9 +129,10 @@ public class main {
 
 						do {
 							systemManager.addQuestionToExam(e,questionChoice);
-							systemManager.showAnswerForSelectedQuestion(questionChoice);
-
 							System.out.println("select the answer number that you wont to add (press 0 to end selecting ");
+							
+							systemManager.showAnswerForSelectedQuestion(questionChoice);
+							
 							int numOfAnswerToAdd = s.nextInt();
 							while (numOfAnswerToAdd != 0) {
 								systemManager.addAnswerToLastQuestion(e, questionChoice, numOfAnswerToAdd);
@@ -144,8 +145,8 @@ public class main {
 							String standardAnswer2 = "More than one answer correctly";
 							boolean standard_2_isRight = false;
 
-							e.allQuestions.lastElement().addStandardAnswer(standardAnswer1, standard_1_isRight);
-							e.allQuestions.lastElement().addStandardAnswer(standardAnswer2, standard_2_isRight);
+							e.getAllQuestions().lastElement().addStandardAnswer(standardAnswer1, standard_1_isRight);
+							e.getAllQuestions().lastElement().addStandardAnswer(standardAnswer2, standard_2_isRight);
 
 							System.out.println("Waiting for the next question / exit");
 							questionChoice = s.nextInt();
@@ -155,17 +156,25 @@ public class main {
 //						System.out.println("db: printing the exam object" + e);
 
 						LocalDate now = LocalDate.now(Clock.systemDefaultZone());
-						String fileName = "exam" + now +".txt";
-						File file = new File(fileName);
-						PrintWriter pw = new PrintWriter(file);
+						String fileName1 = "exam" + now +".txt";
+						File file1 = new File(fileName1);
+						PrintWriter pw1 = new PrintWriter(file1);
+						
+						String fileName2 = "Answers" + now + ".txt";
+						File file2 = new File(fileName2); 
+						PrintWriter pw2 = new PrintWriter(file2);
 
 						System.out.println(e);
+						pw1.println(e.toString());
+						
+						for(int i = 0; i < numOfQuestionRes; i++) {
+							pw2.println(e.getAllQuestions().get(i).getAllAnswers().toString());
+						}
 
-						pw.println(e.toString());
-
-						pw.close();
+						pw1.close();
+						pw2.close();
 						System.out.println("A new exam file was create");
-
+						System.out.println("A new answers file was create");
 						break;
 					}
 
@@ -174,15 +183,20 @@ public class main {
 						Answer a1 = new Answer("answer1" , true);
 						Answer a2 = new Answer("answer2" , true);
 						m.addNewQuestionToSystem("question number 1");
-						m.systemAllQuestions.lastElement().addNewAnswer(a1);
-						m.systemAllQuestions.lastElement().addNewAnswer(a2);
+						m.getSystemAllQuestions().lastElement().addNewAnswer(a1);
+						m.getSystemAllQuestions().lastElement().addNewAnswer(a2);
 						System.out.println(m);
-
-
-
-
-
 					}
+					
+					case 10: {
+						File fs = new File("Questions&&Answers.txt");
+						PrintWriter pw = new PrintWriter(fs);
+						systemManager.saveQuestions(pw);
+						pw.close();
+						System.out.println("Questions saves succesfully! ");
+						break;
+					}
+					
 					case 0: {
 						fcountinue = false;
 						break;
