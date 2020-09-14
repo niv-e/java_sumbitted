@@ -16,6 +16,8 @@ public class main {
 		Scanner s = new Scanner(System.in);
 		int choice =-1; //menu choice
 		boolean fcountinue = true;
+		LocalDate now = LocalDate.now(Clock.systemDefaultZone());
+
 
 
 		SystemManager systemManager = new SystemManager();
@@ -29,7 +31,8 @@ public class main {
 			System.out.println("press 5 to Update wording of answer");
 			System.out.println("press 6 to Delete answer to question");
 			System.out.println("press 7 to Delete question (with answers)");
-			System.out.println("press 9 to to move to handle write mood");
+			System.out.println("press 8 to to move to handle write mood");
+			System.out.println("press 9 to load question to system from file");
 			System.out.println("press 10 to to save all Questions and answers that you have entered");
 			System.out.println("press 0 to Exit");
 			System.out.println("enter your choice-->");
@@ -118,7 +121,7 @@ public class main {
 					}
 					
 
-					case 9: {
+					case 8: {
 						System.out.println("how many question you would like to add to the exam?");
 						int numOfQuestionRes = s.nextInt();
 						System.out.println("Please enter the number of the question that you would like to add:");
@@ -152,16 +155,15 @@ public class main {
 							questionChoice = s.nextInt();
 						} while(questionChoice != 0);
 
-//						System.out.println("db: Start the saving proses");
-//						System.out.println("db: printing the exam object" + e);
 
-						LocalDate now = LocalDate.now(Clock.systemDefaultZone());
 						String fileName1 = "exam" + now +".txt";
 						File file1 = new File(fileName1);
+						file1.createNewFile();
 						PrintWriter pw1 = new PrintWriter(file1);
 						
 						String fileName2 = "Answers" + now + ".txt";
-						File file2 = new File(fileName2); 
+						File file2 = new File(fileName2);
+						file2.createNewFile();
 						PrintWriter pw2 = new PrintWriter(file2);
 
 						System.out.println(e);
@@ -178,25 +180,27 @@ public class main {
 						break;
 					}
 
-					case 8 : {
-						SystemManager m = new SystemManager();
-						Answer a1 = new Answer("answer1" , true);
-						Answer a2 = new Answer("answer2" , true);
-						m.addNewQuestionToSystem("question number 1");
-						m.getSystemAllQuestions().lastElement().addNewAnswer(a1);
-						m.getSystemAllQuestions().lastElement().addNewAnswer(a2);
-						System.out.println(m);
+
+					case 9:{ //load question and answers to file
+						System.out.println("Would you like to see the loading file protocol (true \\ false) ?");
+						if (s.nextBoolean())
+							systemManager.getLoadSaveQuestionsProtocol();
+						System.out.println("please enter file name");
+						s.nextLine();
+						String fileName = s.nextLine();
+						systemManager.loadQuestionFromFile(fileName);
+						System.out.println("The loading process was successful");
+
 					}
-					
-					case 10: {
-						File fs = new File("Questions&&Answers.txt");
-						PrintWriter pw = new PrintWriter(fs);
-						systemManager.saveQuestions(pw);
-						pw.close();
-						System.out.println("Questions saves succesfully! ");
-						break;
+
+
+					case 10: { // save all question and answer from System to file to file
+						String questionFileName = "Question file "+ now;
+						systemManager.saveQuestionToFile();
+						System.out.println("A new file named: "+ questionFileName + " was create!");
+
 					}
-					
+
 					case 0: {
 						fcountinue = false;
 						break;
@@ -210,7 +214,6 @@ public class main {
 
 			} catch (InputMismatchException e) {
 				System.out.println("Input Mismatch exception ");
-				s.nextInt();
 			}
 			catch (MaxAnswerException e){
 				System.out.println(e.getMessage());

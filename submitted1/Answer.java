@@ -17,6 +17,10 @@ public class Answer  implements Cloneable  {
 		this.answerNumber = answerNumber;
 	}
 
+	public String getAnswerText(){
+		return answerText;
+	}
+
 	public void setAnswerText(String answerText, boolean isTheAnswer) {
 		this.answerText = answerText;
 		this.isTheAnswer = isTheAnswer;

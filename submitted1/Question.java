@@ -19,6 +19,10 @@ public class Question implements Cloneable {
 		setQuestionText(questionText);
 	}
 
+	public Question (Scanner s){
+		setQuestionText(s.nextLine());
+	}
+
 	public void setQuestionText(String questionText) {
 		this.questionText = questionText;
 	}

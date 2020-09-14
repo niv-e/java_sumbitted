@@ -2,8 +2,14 @@ package submitted1;
 
 import exceptions.MaxAnswerException;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.Vector;
 
 public class SystemManager {
@@ -12,6 +18,8 @@ public class SystemManager {
 	private int numOfCurrentQuestion;
     private Exam exam;
     private Vector<Question> systemAllQuestions = new Vector<Question>();
+    LocalDate now = LocalDate.now(Clock.systemDefaultZone());
+
 
 
     public SystemManager(){
@@ -92,13 +100,99 @@ public class SystemManager {
             .get(numOfAnswerToAdd));
         return true;
     }
-    
-    public void saveQuestions(PrintWriter pw) throws FileNotFoundException {
-		for(int i = 0; i < systemAllQuestions.size(); i++) {
-			pw.println(systemAllQuestions.get(i));
-			pw.println(systemAllQuestions.get(i).getAllAnswers());
-		}	
-	}
+
+    public void saveQuestionToFile() throws IOException {
+        String questionFileName = "questions_list_"+ now;
+        File questionFile = new File(questionFileName);
+        questionFile.createNewFile();
+        PrintWriter pw = new PrintWriter(questionFile);
+        systemAllQuestions.size();
+        pw.println(systemAllQuestions.size());
+
+        for(int i=0 ; i<systemAllQuestions.size() ; i++){
+            pw.println(systemAllQuestions.get(i).getQuestionText());
+            pw.println(systemAllQuestions.get(i).getAllAnswers().size());
+            for(int j =0 ; j<systemAllQuestions.get(i).getAllAnswers().size() ; j++){
+                pw.println(systemAllQuestions.get(i).getAllAnswers().get(j).getAnswerText());
+                pw.println(systemAllQuestions.get(i).getAllAnswers().get(j).isTheAnswer());
+            }
+        }
+        pw.close();
+    }
+
+    public void loadQuestionFromFile(String filePath) throws FileNotFoundException, MaxAnswerException {
+        File loadedFile = new File(filePath);
+        System.out.println("is file exist? " +loadedFile.exists());
+        Scanner sf = new Scanner(loadedFile);
+        int numOfQuestionInFile = sf.nextInt();
+        sf.nextLine();
+        int numOfAnswerOfCurrentQuestion;
+
+        for(int i=0 ; i< numOfQuestionInFile ; i++){
+            Question q = new Question(sf.nextLine());
+            numOfAnswerOfCurrentQuestion = sf.nextInt();
+            sf.nextLine();
+            for(int j = 0 ; j< numOfAnswerOfCurrentQuestion ; j++){
+                String currentAnswerText = sf.nextLine();
+                boolean currentAnswerResults = sf.nextBoolean();
+                sf.nextLine();
+                Answer a = new Answer(currentAnswerText,currentAnswerResults);
+                q.addNewAnswer(a);
+            }
+            if (!(systemAllQuestions.contains(q))) {//check if the question is already exists on the system
+                systemAllQuestions.add(q);
+            }
+        }
+    }
+
+    public void getLoadSaveQuestionsProtocol(){
+        System.out.println("first line in file is the number of question on file");
+        System.out.println("for each question below save first the Question text");
+        System.out.println("line after the number of answers of the question");
+        System.out.println("line after the answer text ");
+        System.out.println("line after the true of false ");
+        System.out.println("Example: ");
+        System.out.println("2 (number of question on this file)");
+        System.out.println("how old you are? (question one text)");
+        System.out.println("2 (number of answers) ");
+        System.out.println("18 (answer one) ");
+        System.out.println("false ()");
+        System.out.println("25 (answer two) ");
+        System.out.println("true ()");
+        System.out.println("are you student? (question two text)");
+        System.out.println("2 (number of answers) ");
+        System.out.println("yes (answer one) ");
+        System.out.println("true ()");
+        System.out.println("no (answer two) ");
+        System.out.println("false ()");
+
+    }
+
+    public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException {
+        Random r = new Random();
+        final int MIN =1;
+        int max = systemAllQuestions.size();
+        int numberOfAnswerToAdd = 4;
+        int randomQuestionNumber;
+        Exam e = new Exam(numOfQuestion);
+        for(int counter =0 ; counter<numberOfAnswerToAdd ;){
+            randomQuestionNumber = r.nextInt( max - MIN);
+            String questionText = systemAllQuestions.get(randomQuestionNumber).getQuestionText();
+            Question q = new Question(questionText);
+            if(!(e.getAllQuestions().contains(q))){
+                e.addQuestion(q);
+                counter++;
+            }
+            //here we need to add part that copy 4 answers from the random question
+            // and throws exception if the question have lass then 4 answers
+
+        }
+
+
+        return e;
+    }
+
+
 
     public boolean getIfTheRightAnswer(int numOfQuestion, int numOfAnswer){
         return exam.getAllQuestions().get(numOfQuestion-1).getAllAnswers().get(numOfAnswer-1).isTheAnswer();

@@ -1,0 +1,11 @@
+how old u are
+the 1 answer is: 18		false
+the 2 answer is: 25		true
+the 3 answer is: 22		false
+
+[18		false, 25		true, 22		false]
+how many brothers you have
+the 1 answer is: 1		true
+the 2 answer is: 2		false
+
+[1		true, 2		false]

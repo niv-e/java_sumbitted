@@ -33,6 +33,10 @@ public class Exam {
         allQuestions.add(new Question(questionText));
         return true;
     }
+
+    public void addQuestion(Question question){
+        allQuestions.add(question);
+    }
     
     public Vector<Question> getAllQuestions() {
 		return allQuestions;
