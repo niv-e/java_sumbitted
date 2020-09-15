@@ -102,11 +102,11 @@ public class SystemManager {
     }
 
     public void saveQuestionToFile() throws IOException {
-        String questionFileName = "questions_list_"+ now;
+        String questionFileName = "questions_list_ "+ now + ".txt";
         File questionFile = new File(questionFileName);
         questionFile.createNewFile();
         PrintWriter pw = new PrintWriter(questionFile);
-        systemAllQuestions.size();
+        //systemAllQuestions.size();
         pw.println(systemAllQuestions.size());
 
         for(int i=0 ; i<systemAllQuestions.size() ; i++){
@@ -122,8 +122,8 @@ public class SystemManager {
 
     public void loadQuestionFromFile(String filePath) throws FileNotFoundException, MaxAnswerException {
         File loadedFile = new File(filePath);
-        System.out.println("is file exist? " +loadedFile.exists());
-        Scanner sf = new Scanner(loadedFile);
+        System.out.println("is file exist? " + loadedFile.exists());
+    	Scanner sf = new Scanner(loadedFile);
         int numOfQuestionInFile = sf.nextInt();
         sf.nextLine();
         int numOfAnswerOfCurrentQuestion;

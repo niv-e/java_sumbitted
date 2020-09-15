@@ -51,6 +51,7 @@ public class main {
 						System.out.println("Please enter question text: ");
 						String questionText = s.nextLine();
 						systemManager.addNewQuestionToSystem(questionText);
+						System.out.println("If you finish to add questions, press 10 to save your questions in the system!");
 						break;
 					}
 
@@ -74,6 +75,7 @@ public class main {
 							System.out.println("would you like to add another answer? ");
 							flag = checkIfToDo();
 						}
+						System.out.println("If you finish to add answers, press 10 to save your answers in the system!");
 						break;
 					}
 
@@ -151,7 +153,7 @@ public class main {
 							e.getAllQuestions().lastElement().addStandardAnswer(standardAnswer1, standard_1_isRight);
 							e.getAllQuestions().lastElement().addStandardAnswer(standardAnswer2, standard_2_isRight);
 
-							System.out.println("Waiting for the next question / exit");
+							System.out.println("Waiting for the next question /to exit press 0");
 							questionChoice = s.nextInt();
 						} while(questionChoice != 0);
 
@@ -181,7 +183,7 @@ public class main {
 					}
 
 
-					case 9:{ //load question and answers to file
+					case 9:{ //load question and answers from file
 						System.out.println("Would you like to see the loading file protocol (true \\ false) ?");
 						if (s.nextBoolean())
 							systemManager.getLoadSaveQuestionsProtocol();
@@ -194,10 +196,10 @@ public class main {
 					}
 
 
-					case 10: { // save all question and answer from System to file to file
-						String questionFileName = "Question file "+ now;
+					case 10: { // save all question and answer from System to file
+						String questionFileName = "questions_list_ "+ now + ".txt";
 						systemManager.saveQuestionToFile();
-						System.out.println("A new file named: "+ questionFileName + " was create!");
+						System.out.println("A new file named: "+ questionFileName + " was create!, and you have there some questions..");
 
 					}
 
