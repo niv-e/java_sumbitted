@@ -176,13 +176,16 @@ public class SystemManager {
 
     }
 
-    public  int getRandomInRange(int min , int max){
-        Random r = new Random();
-        int randomInRange = r.nextInt(max - min);
+    public int getRandomInRange(int min ,int max){
+    	if(min >= max) {
+    		throw new IllegalArgumentException("min grader than max ");
+    	}
+        int range = max-min;
+        int randomInRange = (int)(Math.random()*(range) * min);
         return randomInRange;
     }
 
-    public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException, noEnoughAnswers {
+    public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException, noEnoughAnswers, MaxAnswerException {
 
         final int MIN = 1;
         int max = systemAllQuestions.size();
@@ -191,9 +194,9 @@ public class SystemManager {
         Exam e = new Exam(numOfQuestion);
         int haveEnoughAnswers = 0;
 
-       	
         for(int counter = 0; counter < numOfQuestion ;){
-            randomQuestionNumber = getRandomInRange(MIN,max);
+        	
+            randomQuestionNumber = getRandomInRange(MIN ,max);
             String questionText = systemAllQuestions.get(randomQuestionNumber).getQuestionText();
             Question q = new Question(questionText);
             int numOfRandomQuestionAnswers = systemAllQuestions.get(randomQuestionNumber).getAllAnswers().size();
@@ -206,7 +209,7 @@ public class SystemManager {
 
             for(int i = 0; i < numberOfAnswerToAdd; i++) {
                 int randomAnswer = getRandomInRange(1,numOfRandomQuestionAnswers);
-                Answer a = new Answer(systemAllQuestions.get(randomQuestionNumber).getAllAnswers().elementAt(randomAnswer).clone());
+                Answer a = systemAllQuestions.get(randomQuestionNumber).getAllAnswers().get(randomAnswer).clone();
                 e.getAllQuestions().lastElement().addNewAnswer(a);
             }
             

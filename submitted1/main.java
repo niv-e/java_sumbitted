@@ -1,5 +1,6 @@
 package submitted1;
 import exceptions.MaxAnswerException;
+import exceptions.noQuestionsInTheList;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,6 +35,8 @@ public class main {
 			System.out.println("press 8 to to move to handle write mood");
 			System.out.println("press 9 to load question to system from file");
 			System.out.println("press 10 to to save all Questions and answers that you have entered");
+			System.out.println("press 11 to create exam from random questions ");
+			
 			System.out.println("press 0 to Exit");
 			System.out.println("enter your choice-->");
 
@@ -159,13 +162,18 @@ public class main {
 
 							System.out.println("Waiting for the next question /to exit press 0");
 							questionChoice = s.nextInt();
+							s.nextLine();
 						} while(questionChoice != 0);
+						
 
 						System.out.println("Please enter the open question text");
 						for (int i = 0 ; i < numOfOpenQuestionRes ; i ++ ) {
-							System.out.println("Please enter the open question text");
-
-							OpenAnswer oq = new OpenAnswer()
+							System.out.println("open question number " + (i+1) + " of " + numOfOpenQuestionRes);
+							String oq = s.nextLine();							
+							OpenQuestion q = new OpenQuestion(oq);
+							System.out.println("q value: " + q);
+							e.getAllQuestions().add(q);
+							System.out.println(e.getAllQuestions().toString());
 						}
 
 
@@ -195,15 +203,14 @@ public class main {
 
 
 					case 9:{ //load question and answers from file
-						System.out.println("Would you like to see the loading file protocol (true \\ false) ?");
-						if (s.nextBoolean())
-							systemManager.getLoadSaveQuestionsProtocol();
-						System.out.println("please enter file name");
-						s.nextLine();
-						String fileName = s.nextLine();
-						systemManager.loadQuestionFromFile(fileName);
+						//System.out.println("Would you like to see the loading file protocol (true \\ false) ?");
+						//if (s.nextBoolean())
+							//systemManager.getLoadSaveQuestionsProtocol();
+						//System.out.println("please enter file name");
+						String fileNamePath = "C:\\Java\\project1\\java_sumbitted\\questions_list_2020-09-15.txt"; //s.next(); //write the all path 
+						systemManager.loadQuestionFromFile(fileNamePath);
 						System.out.println("The loading process was successful");
-
+						break;
 					}
 
 
@@ -211,7 +218,18 @@ public class main {
 						String questionFileName = "questions_list_ "+ now + ".txt";
 						systemManager.saveQuestionToFile();
 						System.out.println("A new file named: "+ questionFileName + " was create!, and you have there some questions..");
-
+						break;
+					}
+					
+					case 11: {
+						if(systemManager.getSystemAllQuestions().size() == 0) {
+							throw new noQuestionsInTheList();
+						}
+						System.out.println("How many questions you want in the random exam? ");
+						int randomQuestions = s.nextInt();
+						Exam e = systemManager.pickRandomQuestions(randomQuestions);
+						System.out.println(e);
+						break;
 					}
 
 					case 0: {

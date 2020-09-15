@@ -15,8 +15,6 @@ public class Answer  implements Cloneable  {
 		setAnswerText(answerText);
 	}
 
-
-
 	public Answer(String answerText, boolean isTheAnswer) {
 		setAnswerText(answerText);
 		setIsTheAnswer(isTheAnswer);
