@@ -8,7 +8,7 @@ public class Question implements Cloneable {
 
 	private final int MAX_NUMBER_OF_ANSWER = 10;
 	private String questionText;
-	private Vector<Answer> allAnswers = new Vector <Answer>();
+	private Vector<Answer> allAnswers = new Vector<Answer>();
 	private int numOfCurrentAnswers = allAnswers.size();
 	private boolean rightAnswerExist = false;
 

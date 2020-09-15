@@ -1,6 +1,7 @@
 package submitted1;
 
 import exceptions.MaxAnswerException;
+import exceptions.noEnoughAnswers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -168,26 +169,43 @@ public class SystemManager {
 
     }
 
-    public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException {
+    public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException, noEnoughAnswers {
         Random r = new Random();
-        final int MIN =1;
+        final int MIN = 1;
         int max = systemAllQuestions.size();
         int numberOfAnswerToAdd = 4;
         int randomQuestionNumber;
         Exam e = new Exam(numOfQuestion);
-        for(int counter =0 ; counter<numberOfAnswerToAdd ;){
-            randomQuestionNumber = r.nextInt( max - MIN);
+        int haveEnoughAnswers = 0;
+       	
+        for(int counter = 0; counter < numOfQuestion ;){
+            randomQuestionNumber = r.nextInt(max - MIN);
             String questionText = systemAllQuestions.get(randomQuestionNumber).getQuestionText();
             Question q = new Question(questionText);
-            if(!(e.getAllQuestions().contains(q))){
-                e.addQuestion(q);
-                counter++;
+            for(int i = 0; i < numberOfAnswerToAdd; i++) {
+            	int numOfRandomQuestionAnswer = systemAllQuestions.get(randomQuestionNumber).getAllAnswers().size();
+            	if(numOfRandomQuestionAnswer >= numberOfAnswerToAdd) {
+            		haveEnoughAnswers += 1;
+            		
+            	
+            	}else {
+            		numberOfAnswerToAdd = numOfRandomQuestionAnswer;
+            	}
+            	
             }
-            //here we need to add part that copy 4 answers from the random question
-            // and throws exception if the question have lass then 4 answers
+            
+            if(!(e.getAllQuestions().contains(q))){          	
+               e.addQuestion(q);
+               counter++;
+                
+            }
+            numberOfAnswerToAdd = 4;
+            
 
         }
-
+        if(haveEnoughAnswers < numberOfAnswerToAdd) {
+        	throw new noEnoughAnswers(numberOfAnswerToAdd - haveEnoughAnswers);
+        }
 
         return e;
     }
