@@ -8,21 +8,30 @@ public class Answer  implements Cloneable  {
 
 	private String answerText;
 	private boolean isTheAnswer;
-	private int answerNumber;
 
 	Scanner s = new Scanner(System.in);
 
-	public Answer(String answerText, boolean isTheAnswer) {
-		setAnswerText(answerText, isTheAnswer);
-		this.answerNumber = answerNumber;
+	public Answer(String answerText) {
+		setAnswerText(answerText);
 	}
+
+
+
+	public Answer(String answerText, boolean isTheAnswer) {
+		setAnswerText(answerText);
+		setIsTheAnswer(isTheAnswer);
+	}
+
 
 	public String getAnswerText(){
 		return answerText;
 	}
 
-	public void setAnswerText(String answerText, boolean isTheAnswer) {
+	public void setAnswerText(String answerText) {
 		this.answerText = answerText;
+	}
+	
+	public void setIsTheAnswer(boolean isTheAnswer){
 		this.isTheAnswer = isTheAnswer;
 	}
 	
@@ -59,11 +68,7 @@ public class Answer  implements Cloneable  {
 	public Answer clone() throws CloneNotSupportedException {
 		return (Answer) super.clone();
 	}
-
-	@Override
-	public int hashCode(){
-		return answerNumber;
-	}
+	
 }
 
 

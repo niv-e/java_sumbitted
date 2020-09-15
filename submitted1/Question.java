@@ -15,11 +15,10 @@ public class Question implements Cloneable {
 	Scanner s = new Scanner(System.in);
 
 	public Question(String questionText) {
-		numOfCurrentAnswers = 0;
 		setQuestionText(questionText);
 	}
 
-	public Question (Scanner s){
+	public Question(Scanner s){
 		setQuestionText(s.nextLine());
 	}
 

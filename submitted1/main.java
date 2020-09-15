@@ -124,13 +124,15 @@ public class main {
 					
 
 					case 8: {
-						System.out.println("how many question you would like to add to the exam?");
+						System.out.println("how many questions you would like to add to the exam? (without open questions) ");
 						int numOfQuestionRes = s.nextInt();
-						System.out.println("Please enter the number of the question that you would like to add:");
+						System.out.println("how many open questions you would like to add? ");
+						int numOfOpenQuestionRes = s.nextInt();
+						System.out.println("Please enter the number of the question that you would like to add  :");
 						System.out.println("press 0 to stop the adding ");
 						System.out.println(systemManager.toString());
 						int questionChoice = s.nextInt();
-						Exam e = systemManager.handleCreateExam(numOfQuestionRes);
+						Exam e = systemManager.handleCreateExam(numOfQuestionRes+numOfOpenQuestionRes);
 
 						do {
 							systemManager.addQuestionToExam(e,questionChoice);
@@ -145,6 +147,8 @@ public class main {
 								numOfAnswerToAdd = s.nextInt();
 
 							}
+
+
 							String standardAnswer1 = "none of the above";
 							boolean standard_1_isRight = false;
 							String standardAnswer2 = "More than one answer correctly";
@@ -156,6 +160,13 @@ public class main {
 							System.out.println("Waiting for the next question /to exit press 0");
 							questionChoice = s.nextInt();
 						} while(questionChoice != 0);
+
+						System.out.println("Please enter the open question text");
+						for (int i = 0 ; i < numOfOpenQuestionRes ; i ++ ) {
+							System.out.println("Please enter the open question text");
+
+							OpenAnswer oq = new OpenAnswer()
+						}
 
 
 						String fileName1 = "exam" + now +".txt";

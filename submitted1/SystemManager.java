@@ -63,17 +63,23 @@ public class SystemManager {
         return true;
     }
 
-    public boolean addNewAnswer(int numOfQuestion,String answerText , boolean isRight) throws MaxAnswerException {
+    public void addNewAnswer(int numOfQuestion,String answerText , boolean isRight) throws MaxAnswerException {
         Answer ans = new Answer(answerText,isRight);
         systemAllQuestions.get(numOfQuestion-1).addNewAnswer(ans);
-        return true;
+    }
+
+    public void addNewOpenAnswer(int numOfQuestion,String answerText) throws MaxAnswerException {
+        OpenAnswer ans = new OpenAnswer(answerText);
+        systemAllQuestions.get(numOfQuestion-1).addNewAnswer(ans);
     }
 
     public boolean updateAnswerText(int numOfQuestion,int numOfAnswer , String answerText){
         numOfQuestion-=1;
         numOfAnswer-=1;
         boolean currentAnswerRes = getIfTheRightAnswer(numOfQuestion,numOfAnswer);
-        exam.getAllQuestions().get(numOfQuestion).getAllAnswers().get(numOfAnswer).setAnswerText(answerText, currentAnswerRes);
+        exam.getAllQuestions().get(numOfQuestion).getAllAnswers().get(numOfAnswer).setAnswerText(answerText);
+        exam.getAllQuestions().get(numOfQuestion).getAllAnswers().get(numOfAnswer).setIsTheAnswer(currentAnswerRes);
+
         return true;
     }
 
@@ -107,15 +113,16 @@ public class SystemManager {
         File questionFile = new File(questionFileName);
         questionFile.createNewFile();
         PrintWriter pw = new PrintWriter(questionFile);
-        //systemAllQuestions.size();
         pw.println(systemAllQuestions.size());
 
-        for(int i=0 ; i<systemAllQuestions.size() ; i++){
+        for(int i = 0; i< systemAllQuestions.size() ; i++){
             pw.println(systemAllQuestions.get(i).getQuestionText());
             pw.println(systemAllQuestions.get(i).getAllAnswers().size());
-            for(int j =0 ; j<systemAllQuestions.get(i).getAllAnswers().size() ; j++){
+            for(int j = 0; j< systemAllQuestions.get(i).getAllAnswers().size() ; j++){
                 pw.println(systemAllQuestions.get(i).getAllAnswers().get(j).getAnswerText());
-                pw.println(systemAllQuestions.get(i).getAllAnswers().get(j).isTheAnswer());
+                if(!(systemAllQuestions.get(i).getAllAnswers().get(j) instanceof OpenAnswer)) {
+                    pw.println(systemAllQuestions.get(i).getAllAnswers().get(j).isTheAnswer());
+                }
             }
         }
         pw.close();
@@ -169,29 +176,38 @@ public class SystemManager {
 
     }
 
-    public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException, noEnoughAnswers {
+    public  int getRandomInRange(int min , int max){
         Random r = new Random();
+        int randomInRange = r.nextInt(max - min);
+        return randomInRange;
+    }
+
+    public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException, noEnoughAnswers {
+
         final int MIN = 1;
         int max = systemAllQuestions.size();
         int numberOfAnswerToAdd = 4;
         int randomQuestionNumber;
         Exam e = new Exam(numOfQuestion);
         int haveEnoughAnswers = 0;
+
        	
         for(int counter = 0; counter < numOfQuestion ;){
-            randomQuestionNumber = r.nextInt(max - MIN);
+            randomQuestionNumber = getRandomInRange(MIN,max);
             String questionText = systemAllQuestions.get(randomQuestionNumber).getQuestionText();
             Question q = new Question(questionText);
+            int numOfRandomQuestionAnswers = systemAllQuestions.get(randomQuestionNumber).getAllAnswers().size();
+
+            if(numOfRandomQuestionAnswers >= numberOfAnswerToAdd) {
+                haveEnoughAnswers += 1;
+            }else {
+                numberOfAnswerToAdd = numOfRandomQuestionAnswers;
+            }
+
             for(int i = 0; i < numberOfAnswerToAdd; i++) {
-            	int numOfRandomQuestionAnswer = systemAllQuestions.get(randomQuestionNumber).getAllAnswers().size();
-            	if(numOfRandomQuestionAnswer >= numberOfAnswerToAdd) {
-            		haveEnoughAnswers += 1;
-            		
-            	
-            	}else {
-            		numberOfAnswerToAdd = numOfRandomQuestionAnswer;
-            	}
-            	
+                int randomAnswer = getRandomInRange(1,numOfRandomQuestionAnswers);
+                Answer a = new Answer(systemAllQuestions.get(randomQuestionNumber).getAllAnswers().elementAt(randomAnswer).clone());
+                e.getAllQuestions().lastElement().addNewAnswer(a);
             }
             
             if(!(e.getAllQuestions().contains(q))){          	
@@ -230,7 +246,7 @@ public class SystemManager {
             return "there is not question on the system yet \n";
         else {
             StringBuilder sb = new StringBuilder();
-            for(int i =0 ; i< systemAllQuestions.size() ; i++) {
+            for(int i = 0; i< systemAllQuestions.size() ; i++) {
                 sb.append("Question " + (i+1) + ": \n" );
                 sb.append(systemAllQuestions.get(i).toString() + "\n");
             }
