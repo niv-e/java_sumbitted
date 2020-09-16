@@ -24,11 +24,11 @@ public class check {
 //		System.out.println(allQuestions.toString());
 		
 		
-		
-			int min = 1, max = 5;
-	        Random r = new Random();
-	        int randomInRange = r.nextInt(max - min);
-	        System.out.println(randomInRange);
+		Random rand = new Random();
+        	
+        for(int i = 0; i < 50; i++) {
+        	System.out.println(rand.nextInt(5) + 1);
+	}
 }	    
 }	
 

@@ -1,5 +1,6 @@
 package Daniel_Niazov;
 import exceptions.MaxAnswerException;
+import exceptions.noEnoughAnswers;
 import exceptions.noQuestionsInTheList;
 
 import java.io.File;
@@ -224,16 +225,22 @@ public class main {
 					}
 					
 					case 10: {
+						System.out.println("How many questions you want in the random exam? ");
+						int randomQuestions = s.nextInt();
+						Exam e = new Exam(randomQuestions);
 						if(systemManager.getSystemAllQuestions().size() == 0) {
 							throw new noQuestionsInTheList();
 						}
-						System.out.println("How many questions you want in the random exam? ");
-						int randomQuestions = s.nextInt();
-						Exam e = systemManager.pickRandomQuestions(randomQuestions);
-						e.saveExam();
+						e = systemManager.pickRandomQuestions(randomQuestions);
+						if(e.getAllQuestions().size() == randomQuestions) {
+							e.saveExam();
+							System.out.println("You create a new exam with " + randomQuestions + " questions");
+						}else {
+							System.out.println("something wrong please try again! ");
+						}
 						break;
 					}
-
+					
 					case 0: {
 						fcountinue = false;
 						break;

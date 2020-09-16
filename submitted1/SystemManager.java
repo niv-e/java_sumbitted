@@ -176,14 +176,14 @@ public class SystemManager implements able {
     		throw new IllegalArgumentException("min grader than max ");
     	}
         int range = max-min;
-        return (int)((Math.random()*(range) * min) + min);
+        Random rand = new Random();
+        return rand.nextInt(range + 1);
     }
 
     public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException, noEnoughAnswers, MaxAnswerException {
-
-        final int MIN = 1;
-        int max = systemAllQuestions.size();
-        int numberOfAnswerToAdd = 4;
+   		final int MIN = 1;
+    	int max = systemAllQuestions.size();
+    	int numberOfAnswerToAdd = 4;
         int randomQuestionNumber;
         Exam e = new Exam(numOfQuestion);
         int haveEnoughAnswers = 0;
@@ -226,14 +226,17 @@ public class SystemManager implements able {
 
         }
 
-        numberOfAnswerToAdd = 4;
+     //   numberOfAnswerToAdd = 4;
 
-        if(haveEnoughAnswers < numberOfAnswerToAdd) {
-        	//throw new noEnoughAnswers(numberOfAnswerToAdd - haveEnoughAnswers);
-            System.out.println("throws noEnough");
+     //   if(haveEnoughAnswers < numberOfAnswerToAdd) {
+        //	throw new noEnoughAnswers(numberOfAnswerToAdd - haveEnoughAnswers);
+         //   //System.out.println("throws noEnough");
+    //    }
+        
+        	return e;
         }
-        return e;
-    }
+        
+    
 
 
     public boolean checkIfAnotherTrueAnswer(int numOfQues ,Answer answer) throws Exception {
