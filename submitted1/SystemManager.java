@@ -39,13 +39,12 @@ public class SystemManager implements able {
 
 
     public boolean updateQuestion(int numOfQuestion , String questionText) throws ArrayIndexOutOfBoundsException{
-        exam.getAllQuestions().get(numOfQuestion-1).setQuestionText(questionText);
+        systemAllQuestions.get(numOfQuestion-1).setQuestionText(questionText);
         return true;
     }
 
     public void deleteQuestion(int questionForDelete) {
-        questionForDelete -= 1;
-        exam.getAllQuestions().remove(questionForDelete);
+        systemAllQuestions.remove(questionForDelete - 1);
         numOfCurrentQuestion--;
     }
 
@@ -74,19 +73,15 @@ public class SystemManager implements able {
     }
 
     public boolean updateAnswerText(int numOfQuestion,int numOfAnswer , String answerText){
-        numOfQuestion-=1;
-        numOfAnswer-=1;
-        boolean currentAnswerRes = getIfTheRightAnswer(numOfQuestion,numOfAnswer);
-        exam.getAllQuestions().get(numOfQuestion).getAllAnswers().get(numOfAnswer).setAnswerText(answerText);
-        exam.getAllQuestions().get(numOfQuestion).getAllAnswers().get(numOfAnswer).setIsTheAnswer(currentAnswerRes);
+        boolean currentAnswerRes = getIfTheRightAnswer(numOfQuestion, numOfAnswer);
+        systemAllQuestions.get(numOfQuestion - 1).getAllAnswers().get(numOfAnswer - 1).setAnswerText(answerText);
+        systemAllQuestions.get(numOfQuestion - 1).getAllAnswers().get(numOfAnswer - 1).setIsTheAnswer(currentAnswerRes);
 
         return true;
     }
 
     public boolean deleteAnswer(int numOfQuestion, int numOfAnswer){
-        numOfQuestion-=1;
-        numOfAnswer-=1;
-        exam.getAllQuestions().get(numOfQuestion).getAllAnswers().remove(numOfAnswer);
+        systemAllQuestions.get(numOfQuestion - 1).getAllAnswers().remove(numOfAnswer - 1);
         return true;
     }
 
@@ -240,7 +235,7 @@ public class SystemManager implements able {
 
 
     public boolean getIfTheRightAnswer(int numOfQuestion, int numOfAnswer){
-        return exam.getAllQuestions().get(numOfQuestion-1).getAllAnswers().get(numOfAnswer-1).isTheAnswer();
+        return systemAllQuestions.get(numOfQuestion-1).getAllAnswers().get(numOfAnswer-1).isTheAnswer();
     }
 
     public Vector<Question> getSystemAllQuestions() {

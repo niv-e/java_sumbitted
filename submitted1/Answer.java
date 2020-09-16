@@ -40,8 +40,9 @@ public class Answer  implements Cloneable  {
 		return isTheAnswer;
 	}
 
+	@Override
 	public String toString() {
-		return (answerText + "\t " + isTheAnswer);
+		return answerText + "\t(" + isTheAnswer + ")";
 	}
 
 	@Override

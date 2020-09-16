@@ -99,6 +99,7 @@ public class main {
 						String questionText = s.nextLine();
 
 						systemManager.updateQuestion(questionChoice, questionText);
+						System.out.println("press 9 to save your changes ");
 						break;
 					}
 
@@ -113,6 +114,7 @@ public class main {
 						String answerText = s.nextLine();
 
 						systemManager.updateAnswerText(questionChoice, answerChoice, answerText);
+						System.out.println("press 9 to save your changes ");
 						break;
 					}
 
@@ -122,6 +124,7 @@ public class main {
 						System.out.println("which answer you would like to delete?");
 						int answerChoice = s.nextInt();
 						systemManager.deleteAnswer(questionChoice, answerChoice);
+						System.out.println("press 9 to save your changes ");
 						break;
 					}
 
@@ -130,36 +133,41 @@ public class main {
 						int questionChoice = s.nextInt();
 
 						systemManager.deleteQuestion(questionChoice);
+						System.out.println("press 9 to save your changes ");
 						break;
 					}
 					
 
 					case 8: {
-						System.out.println("how many questions you would like to add to the exam? (without open questions) ");
-						int numOfQuestionRes = s.nextInt();
-						System.out.println("how many open questions you would like to add? ");
-						int numOfOpenQuestionRes = s.nextInt();
-						System.out.println("Please enter the number of the question that you would like to add  :");
-						System.out.println("press 0 to stop the adding ");
-						System.out.println(systemManager.toString());
-						int questionChoice = s.nextInt();
-						Exam e = systemManager.handleCreateExam(numOfQuestionRes+numOfOpenQuestionRes);
-
+							int counter2 = 0;
+							System.out.println("how many questions you would like to add to the exam? (without open questions) ");
+							int numOfQuestionRes = s.nextInt();
+							System.out.println("how many open questions you would like to add? ");
+							int numOfOpenQuestionRes = s.nextInt();
+							System.out.println(systemManager.toString());
+							Exam e = systemManager.handleCreateExam(numOfQuestionRes+numOfOpenQuestionRes);
+						
 						do {
+							System.out.println("Please enter the number of the question that you would like to add  :");
+							System.out.println("press 0 to stop the adding ");
+							int questionChoice = s.nextInt();
+							
+
+							int counter;
+						
 							systemManager.addQuestionToExam(e,questionChoice);
-							System.out.println("select the answer number that you wont to add (press 0 to end selecting ");
+							System.out.println("select how many answers you want to add (press 0 to end selecting) ");
 							
+							int numOfTotalAnswers = s.nextInt();
+							
+							int counter1 = 0;
 							systemManager.showAnswerForSelectedQuestion(questionChoice);
-							
-							int numOfAnswerToAdd = s.nextInt();
-							while (numOfAnswerToAdd != 0) {
-								systemManager.addAnswerToLastQuestion(e, questionChoice, numOfAnswerToAdd);
-								System.out.println("new answer was added, waiting for next answer");
-								numOfAnswerToAdd = s.nextInt();
-
+							while (counter1 < numOfTotalAnswers) {
+								System.out.println("Enter the num of answer: ");
+								int numOfAnswerToAdd = s.nextInt();
+								systemManager.addAnswerToLastQuestion(e, questionChoice, numOfAnswerToAdd);	
+								counter1++;
 							}
-
-
 							String standardAnswer1 = "none of the above";
 							boolean standard_1_isRight = false;
 							String standardAnswer2 = "More than one answer correctly";
@@ -168,16 +176,14 @@ public class main {
 							e.getAllQuestions().lastElement().addStandardAnswer(standardAnswer1, standard_1_isRight);
 							e.getAllQuestions().lastElement().addStandardAnswer(standardAnswer2, standard_2_isRight);
 
-							System.out.println("Waiting for the next question /to exit press 0");
-							questionChoice = s.nextInt();
-							s.nextLine();
-						} while(questionChoice != 0);
+							counter2++;
+						} while(counter2 < numOfQuestionRes);
 						
 
 						System.out.println("Please enter the open question text");
 						for (int i = 0 ; i < numOfOpenQuestionRes ; i ++ ) {
 							System.out.println("open question number " + (i+1) + " of " + numOfOpenQuestionRes);
-							String oq = s.nextLine();							
+							String oq = s.next();							
 							OpenQuestion q = new OpenQuestion(oq);
 							System.out.println("q value: " + q);
 							e.getAllQuestions().add(q);

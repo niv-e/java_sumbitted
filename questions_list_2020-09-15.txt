@@ -1,0 +1,43 @@
+5
+who is niv?
+3
+doctor
+true
+programmer
+false
+lawyer
+false
+who is daniel?
+4
+rabbi
+false
+proffesor
+true
+shoemaker
+false
+goldsmite
+false
+how old u are
+3
+18
+false
+25
+true
+22
+false
+you have brothers?
+2
+yes
+true
+no
+false
+who is moses?
+4
+leader
+true
+thief
+false
+runner
+true
+swwimer
+false
