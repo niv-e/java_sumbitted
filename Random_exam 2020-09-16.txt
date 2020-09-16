@@ -1,0 +1,43 @@
+4
+how old u are
+6
+18
+false
+25
+true
+22
+false
+18
+false
+25
+true
+22
+false
+who is moses?
+3
+swwimer
+false
+runner
+true
+thief
+false
+who is daniel?
+6
+proffesor
+true
+shoemaker
+false
+goldsmite
+false
+18
+false
+25
+true
+22
+false
+you have brothers?
+2
+yes
+true
+no
+false

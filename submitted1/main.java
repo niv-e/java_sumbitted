@@ -207,7 +207,7 @@ public class main {
 						//if (s.nextBoolean())
 							//systemManager.getLoadSaveQuestionsProtocol();
 						//System.out.println("please enter file name");
-						String fileNamePath = "C:\\Java\\project1\\java_sumbitted\\questions_list_2020-09-15.txt"; //s.next(); //write the all path 
+						String fileNamePath = "questions_list_2020-09-14"; //s.next(); //write the all path
 						systemManager.loadQuestionFromFile(fileNamePath);
 						System.out.println("The loading process was successful");
 						break;
@@ -228,7 +228,7 @@ public class main {
 						System.out.println("How many questions you want in the random exam? ");
 						int randomQuestions = s.nextInt();
 						Exam e = systemManager.pickRandomQuestions(randomQuestions);
-						System.out.println(e);
+						e.saveExam();
 						break;
 					}
 

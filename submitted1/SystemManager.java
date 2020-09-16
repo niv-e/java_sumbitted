@@ -181,8 +181,7 @@ public class SystemManager {
     		throw new IllegalArgumentException("min grader than max ");
     	}
         int range = max-min;
-        int randomInRange = (int)(Math.random()*(range) * min);
-        return randomInRange;
+        return (int)((Math.random()*(range) * min)+min);
     }
 
     public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException, noEnoughAnswers, MaxAnswerException {
@@ -199,37 +198,47 @@ public class SystemManager {
             randomQuestionNumber = getRandomInRange(MIN ,max);
             String questionText = systemAllQuestions.get(randomQuestionNumber).getQuestionText();
             Question q = new Question(questionText);
+
+            if(!(e.getAllQuestions().contains(q))){
+                e.addQuestion(q);
+                counter++;
+            }
+
             int numOfRandomQuestionAnswers = systemAllQuestions.get(randomQuestionNumber).getAllAnswers().size();
 
-            if(numOfRandomQuestionAnswers >= numberOfAnswerToAdd) {
-                haveEnoughAnswers += 1;
+            if(numOfRandomQuestionAnswers > numberOfAnswerToAdd) {
+                haveEnoughAnswers++;
+
+                for(int i = 0; i < numberOfAnswerToAdd;) {
+                    int randomAnswer = getRandomInRange(1, numOfRandomQuestionAnswers);
+                    Answer a = systemAllQuestions.get(randomQuestionNumber).getAllAnswers().get(randomAnswer).clone();
+
+                    if (!(e.getAllQuestions().lastElement().getAllAnswers().contains(a))) {
+                        e.getAllQuestions().lastElement().addNewAnswer(a);
+                        i++;
+                    }
+                }
+
             }else {
+                if(numOfRandomQuestionAnswers == numberOfAnswerToAdd){
+                    haveEnoughAnswers ++;
+                }
                 numberOfAnswerToAdd = numOfRandomQuestionAnswers;
+                for( Answer a : systemAllQuestions.get(randomQuestionNumber).getAllAnswers() ) {
+                    e.getAllQuestions().lastElement().addNewAnswer(a.clone());
+                }
             }
-
-            for(int i = 0; i < numberOfAnswerToAdd; i++) {
-                int randomAnswer = getRandomInRange(1,numOfRandomQuestionAnswers);
-                Answer a = systemAllQuestions.get(randomQuestionNumber).getAllAnswers().get(randomAnswer).clone();
-                e.getAllQuestions().lastElement().addNewAnswer(a);
-            }
-            
-            if(!(e.getAllQuestions().contains(q))){          	
-               e.addQuestion(q);
-               counter++;
-                
-            }
-            numberOfAnswerToAdd = 4;
-            
 
         }
+
+        numberOfAnswerToAdd = 4;
+
         if(haveEnoughAnswers < numberOfAnswerToAdd) {
-        	throw new noEnoughAnswers(numberOfAnswerToAdd - haveEnoughAnswers);
+        	//throw new noEnoughAnswers(numberOfAnswerToAdd - haveEnoughAnswers);
+            System.out.println("throws noEnough");
         }
-
         return e;
     }
-
-
 
     public boolean getIfTheRightAnswer(int numOfQuestion, int numOfAnswer){
         return exam.getAllQuestions().get(numOfQuestion-1).getAllAnswers().get(numOfAnswer-1).isTheAnswer();
@@ -246,7 +255,7 @@ public class SystemManager {
     @Override
     public String toString(){
         if(systemAllQuestions.size()==0)
-            return "there is not question on the system yet \n";
+            return "there is not question on the system yet \n"; // change to exception
         else {
             StringBuilder sb = new StringBuilder();
             for(int i = 0; i< systemAllQuestions.size() ; i++) {
