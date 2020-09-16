@@ -1,4 +1,4 @@
-package submitted1;
+package Daniel_Niazov;
 
 import java.util.Random;
 import java.util.Scanner;

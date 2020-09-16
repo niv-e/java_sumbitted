@@ -1,10 +1,11 @@
-package submitted1;
+package Daniel_Niazov;
 
 public class OpenQuestion extends Question {
-    Answer openAnswer ;
+    String question;
+	Answer openAnswer ;
 
-    public OpenQuestion(String questionText){
-        super(questionText);
+    public OpenQuestion(String question){
+        super(question);
     }
 
 }

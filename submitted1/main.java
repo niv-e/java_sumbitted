@@ -1,4 +1,4 @@
-package submitted1;
+package Daniel_Niazov;
 import exceptions.MaxAnswerException;
 import exceptions.noQuestionsInTheList;
 
@@ -156,12 +156,12 @@ public class main {
 							int counter;
 						
 							systemManager.addQuestionToExam(e,questionChoice);
-							System.out.println("select how many answers you want to add (press 0 to end selecting) ");
+							systemManager.showAnswerForSelectedQuestion(questionChoice);
 							
+							System.out.println("select how many answers you want to add (press 0 to end selecting) ");
 							int numOfTotalAnswers = s.nextInt();
 							
 							int counter1 = 0;
-							systemManager.showAnswerForSelectedQuestion(questionChoice);
 							while (counter1 < numOfTotalAnswers) {
 								System.out.println("Enter the num of answer: ");
 								int numOfAnswerToAdd = s.nextInt();
