@@ -1,4 +1,4 @@
-package Daniel_Niazov;
+package submitted1;
 
 import exceptions.MaxAnswerException;
 
@@ -16,10 +16,6 @@ public class Question implements Cloneable {
 
 	public Question(String questionText) {
 		setQuestionText(questionText);
-	}
-
-	public Question(Scanner s){
-		setQuestionText(s.nextLine());
 	}
 
 	public void setQuestionText(String questionText) {
@@ -40,17 +36,6 @@ public class Question implements Cloneable {
 		allAnswers.add(ans);
 	}
 
-
-	public void addNewAnswer(String answerText , boolean isRight) throws MaxAnswerException {
-		if(allAnswers.size()>MAX_NUMBER_OF_ANSWER)
-			throw new MaxAnswerException();
-		allAnswers.add(new Answer(answerText,isRight));
-	}
-
-	public void copyAnswer(Answer answer) throws CloneNotSupportedException {
-		allAnswers.add(answer.clone());
-	}
-
 	public void addStandardAnswer(String answerText, boolean isRight){
 		allAnswers.add(new Answer(answerText,isRight));
 	}
@@ -62,10 +47,6 @@ public class Question implements Cloneable {
 		allAnswers.remove(answerForDelete);
 	}
 
-	public boolean checkIfRightAnswerExist() {
-		return rightAnswerExist;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -75,8 +56,6 @@ public class Question implements Cloneable {
 			sb.append("Answer " + (i + 1) + " is: " + allAnswers.get(i).toString() + " \n");
 		return sb.toString();
 	}
-
-
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {

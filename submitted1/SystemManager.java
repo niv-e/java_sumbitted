@@ -1,4 +1,4 @@
-package Daniel_Niazov;
+package submitted1;
 
 import exceptions.MaxAnswerException;
 import exceptions.noEnoughAnswers;
@@ -16,7 +16,6 @@ import java.util.Vector;
 public class SystemManager implements able {
    
 	private final int MAX_NUM_OF_QUESTIONS = 10;
-	private int numOfCurrentQuestion;
     private Exam exam;
     private Vector<Question> systemAllQuestions = new Vector<Question>();
     LocalDate now = LocalDate.now(Clock.systemDefaultZone());
@@ -37,7 +36,6 @@ public class SystemManager implements able {
         return true;
     }
 
-
     public boolean updateQuestion(int numOfQuestion , String questionText) throws ArrayIndexOutOfBoundsException{
         systemAllQuestions.get(numOfQuestion-1).setQuestionText(questionText);
         return true;
@@ -45,9 +43,7 @@ public class SystemManager implements able {
 
     public void deleteQuestion(int questionForDelete) {
         systemAllQuestions.remove(questionForDelete - 1);
-        numOfCurrentQuestion--;
     }
-
 
     public Exam handleCreateExam(int numOfQuestion){
        Exam exam = new Exam(numOfQuestion);
@@ -58,8 +54,11 @@ public class SystemManager implements able {
         questionNumber-=1;
         String textToCopy = systemAllQuestions.get(questionNumber).getQuestionText();
         Question q = new Question(textToCopy);
-        e.getAllQuestions().add(q);
-        return true;
+        if(!(e.getAllQuestions().contains(q))) {
+            e.getAllQuestions().add(q);
+            return true;
+        }
+        return false;
     }
 
     public void addNewAnswer(int numOfQuestion,String answerText , boolean isRight) throws MaxAnswerException {
@@ -70,6 +69,11 @@ public class SystemManager implements able {
     public void addNewOpenAnswer(int numOfQuestion,String answerText) throws MaxAnswerException {
         OpenAnswer ans = new OpenAnswer(answerText);
         systemAllQuestions.get(numOfQuestion-1).addNewAnswer(ans);
+    }
+
+    public int getNumOfAnswer(int numOfQuestion){
+        int res =systemAllQuestions.get(numOfQuestion-1).getAllAnswers().size();
+        return res;
     }
 
     public boolean updateAnswerText(int numOfQuestion,int numOfAnswer , String answerText){
@@ -97,10 +101,12 @@ public class SystemManager implements able {
     public boolean addAnswerToLastQuestion(Exam exam ,int numOfQuestionFromSystem,int numOfAnswerToAdd) throws CloneNotSupportedException, MaxAnswerException {
         numOfQuestionFromSystem-=1;
         numOfAnswerToAdd-=1;
-
-        exam.getAllQuestions().lastElement().addNewAnswer(systemAllQuestions.get(numOfQuestionFromSystem).getAllAnswers()
-            .get(numOfAnswerToAdd));
-        return true;
+        Answer a = systemAllQuestions.get(numOfQuestionFromSystem).getAllAnswers().get(numOfAnswerToAdd);
+        if(!(exam.getAllQuestions().contains(a))) {
+            exam.getAllQuestions().lastElement().addNewAnswer(a);
+            return true;
+        }
+        return false;
     }
 
     public void saveQuestionToFile() throws IOException {
@@ -147,30 +153,7 @@ public class SystemManager implements able {
             }
         }
     }
-/*
-    public void getLoadSaveQuestionsProtocol(){
-        System.out.println("first line in file is the number of question on file");
-        System.out.println("for each question below save first the Question text");
-        System.out.println("line after the number of answers of the question");
-        System.out.println("line after the answer text ");
-        System.out.println("line after the true of false ");
-        System.out.println("Example: ");
-        System.out.println("2 (number of question on this file)");
-        System.out.println("how old you are? (question one text)");
-        System.out.println("2 (number of answers) ");
-        System.out.println("18 (answer one) ");
-        System.out.println("false ()");
-        System.out.println("25 (answer two) ");
-        System.out.println("true ()");
-        System.out.println("are you student? (question two text)");
-        System.out.println("2 (number of answers) ");
-        System.out.println("yes (answer one) ");
-        System.out.println("true ()");
-        System.out.println("no (answer two) ");
-        System.out.println("false ()");
 
-    }
-*/
     public int getRandomInRange(int min ,int max){
     	if(min >= max) {
     		throw new IllegalArgumentException("min grader than max ");
@@ -186,7 +169,6 @@ public class SystemManager implements able {
     	int numberOfAnswerToAdd = 4;
         int randomQuestionNumber;
         Exam e = new Exam(numOfQuestion);
-        int haveEnoughAnswers = 0;
 
         for(int counter = 0; counter < numOfQuestion ;){
         	
@@ -202,7 +184,6 @@ public class SystemManager implements able {
             int numOfRandomQuestionAnswers = systemAllQuestions.get(randomQuestionNumber).getAllAnswers().size();
 
             if(numOfRandomQuestionAnswers > numberOfAnswerToAdd) {
-                haveEnoughAnswers++;
 
                 for(int i = 0; i < numberOfAnswerToAdd;) {
                     int randomAnswer = getRandomInRange(1, numOfRandomQuestionAnswers);
@@ -215,9 +196,7 @@ public class SystemManager implements able {
                 }
 
             }else {
-                if(numOfRandomQuestionAnswers == numberOfAnswerToAdd){
-                    haveEnoughAnswers ++;
-                }
+
                 numberOfAnswerToAdd = numOfRandomQuestionAnswers;
                 for( Answer a : systemAllQuestions.get(randomQuestionNumber).getAllAnswers() ) {
                     e.getAllQuestions().lastElement().addNewAnswer(a.clone());
@@ -225,19 +204,8 @@ public class SystemManager implements able {
             }
 
         }
-
-     //   numberOfAnswerToAdd = 4;
-
-     //   if(haveEnoughAnswers < numberOfAnswerToAdd) {
-        //	throw new noEnoughAnswers(numberOfAnswerToAdd - haveEnoughAnswers);
-         //   //System.out.println("throws noEnough");
-    //    }
-        
         	return e;
         }
-        
-    
-
 
     public boolean checkIfAnotherTrueAnswer(int numOfQues ,Answer answer) throws Exception {
 		for(int i = 0; i < systemAllQuestions.get(numOfQues).getAllAnswers().size(); i++) {
@@ -263,11 +231,8 @@ public class SystemManager implements able {
     @Override
     public String toString(){
 
-        if(systemAllQuestions.size() == 0)
-            return "there is not question on the system yet \n";
-
         if(systemAllQuestions.size()==0)
-            return "there is not question on the system yet \n"; // change to exception
+            return "there is not question on the system yet \n";
 
         else {
             StringBuilder sb = new StringBuilder();

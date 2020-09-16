@@ -1,4 +1,4 @@
-package Daniel_Niazov;
+package submitted1;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,22 +12,11 @@ public class Exam {
 	private Vector<Question> allQuestions = new Vector<Question>();
     private int numOfCurrentQuestion = allQuestions.size();
 	private int numOfQuestion;
-	private OpenQuestion openQuestion;
+    LocalDate now = LocalDate.now(Clock.systemDefaultZone());
 
-
-    Scanner s = new Scanner(System.in);
 
     public Exam(int numOfQuestion){
         this.numOfQuestion = numOfQuestion;
-    }
-
-    public void addOpenQuestion(String questionText){
-        openQuestion = new OpenQuestion(questionText);
-    }
-
-    public boolean addQuestion(String questionText) {
-        allQuestions.add(new Question(questionText));
-        return true;
     }
 
     public void addQuestion(Question question){
@@ -39,8 +28,7 @@ public class Exam {
 	}
 
 	public void saveExam() throws IOException {
-        LocalDate now = LocalDate.now(Clock.systemDefaultZone());
-        String questionFileName = "Random_exam "+ now + ".txt";
+        String questionFileName = "Exam " + now + ".txt";
         File examFile = new File(questionFileName);
         examFile.createNewFile();
         PrintWriter pw = new PrintWriter(examFile);
@@ -59,6 +47,19 @@ public class Exam {
         pw.close();
     }
 
+    public void saveExamSolutions() throws IOException {
+        String solutionsFileName =  "Solution " + now + ".txt";
+        File solutionsFile = new File(solutionsFileName);
+        solutionsFile.createNewFile();
+        PrintWriter pw = new PrintWriter(solutionsFile);
+        for(int i = 0 ; i <allQuestions.size() ; i++){
+            for(Answer a : allQuestions.get(i).getAllAnswers()){
+                pw.println(a);
+
+            }
+        }
+        pw.close();
+    }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();

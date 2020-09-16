@@ -1,0 +1,19 @@
+3
+who is eran?
+3
+judger
+false
+none of the above
+false
+More than one answer correctly
+false
+who is moses?
+3
+leader
+true
+none of the above
+false
+More than one answer correctly
+false
+we do good work?
+0
