@@ -70,9 +70,9 @@ public class Question implements Cloneable {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(questionText + "\n");
+		sb.append( questionText + "\n");
 		for (int i = 0; i < allAnswers.size() ; i++)
-			sb.append("the " + (i + 1) + " answer is: " + allAnswers.get(i).toString() +"\n");
+			sb.append("Answer " + (i + 1) + " is: " + allAnswers.get(i).toString() + " \n");
 		return sb.toString();
 	}
 

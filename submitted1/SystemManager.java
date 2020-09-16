@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class SystemManager {
+public class SystemManager implements able {
    
 	private final int MAX_NUM_OF_QUESTIONS = 10;
 	private int numOfCurrentQuestion;
@@ -152,7 +152,7 @@ public class SystemManager {
             }
         }
     }
-
+/*
     public void getLoadSaveQuestionsProtocol(){
         System.out.println("first line in file is the number of question on file");
         System.out.println("for each question below save first the Question text");
@@ -175,7 +175,7 @@ public class SystemManager {
         System.out.println("false ()");
 
     }
-
+*/
     public int getRandomInRange(int min ,int max){
     	if(min >= max) {
     		throw new IllegalArgumentException("min grader than max ");
@@ -229,6 +229,14 @@ public class SystemManager {
         return e;
     }
 
+    public boolean checkIfAnotherTrueAnswer(int numOfQues ,Answer answer) throws Exception {
+		for(int i = 0; i < systemAllQuestions.get(numOfQues).getAllAnswers().size(); i++) {
+			if(systemAllQuestions.get(numOfQues).getAllAnswers().get(i).getIfTheRightAnswer() == answer.getIfTheRightAnswer()) {
+				throw new Exception("There is more than one true answer ");
+			}	
+		}
+		return true;
+	}
 
 
     public boolean getIfTheRightAnswer(int numOfQuestion, int numOfAnswer){
@@ -245,12 +253,12 @@ public class SystemManager {
 
     @Override
     public String toString(){
-        if(systemAllQuestions.size()==0)
+        if(systemAllQuestions.size() == 0)
             return "there is not question on the system yet \n";
         else {
             StringBuilder sb = new StringBuilder();
-            for(int i = 0; i< systemAllQuestions.size() ; i++) {
-                sb.append("Question " + (i+1) + ": \n" );
+            for(int i = 0; i < systemAllQuestions.size() ; i++) {
+                sb.append("Question " + (i+1) + " --> \n" );
                 sb.append(systemAllQuestions.get(i).toString() + "\n");
             }
             return sb.toString();

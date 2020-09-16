@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class main {
 
-	public static void main(String[] args) throws FileNotFoundException, CloneNotSupportedException {
+	public static void main(String[] args) throws FileNotFoundException, CloneNotSupportedException, MaxAnswerException {
 		Scanner s = new Scanner(System.in);
 		int choice =-1; //menu choice
 		boolean fcountinue = true;
@@ -22,6 +22,10 @@ public class main {
 
 
 		SystemManager systemManager = new SystemManager();
+		//load question and answers from file
+		String fileNamePath = "C:\\Java\\project1\\java_sumbitted\\questions_list_ 2020-09-16.txt"; // hey user, change here to your computer path.
+		systemManager.loadQuestionFromFile(fileNamePath);
+		System.out.println("all questions from the system loaded succesfully \n");
 
 		do {
 			System.out.println("choose one of the following options: ");
@@ -33,9 +37,8 @@ public class main {
 			System.out.println("press 6 to Delete answer to question");
 			System.out.println("press 7 to Delete question (with answers)");
 			System.out.println("press 8 to to move to handle write mood");
-			System.out.println("press 9 to load question to system from file");
-			System.out.println("press 10 to to save all Questions and answers that you have entered");
-			System.out.println("press 11 to create exam from random questions ");
+			System.out.println("press 9 to to save all Questions and answers that you have entered");
+			System.out.println("press 10 to create exam from random questions ");
 			
 			System.out.println("press 0 to Exit");
 			System.out.println("enter your choice-->");
@@ -54,14 +57,14 @@ public class main {
 						System.out.println("Please enter question text: ");
 						String questionText = s.nextLine();
 						systemManager.addNewQuestionToSystem(questionText);
-						System.out.println("If you finish to add questions, press 10 to save your questions in the system!");
+						System.out.println("If you finish to add questions, press 9 to save your questions in the system!");
 						break;
 					}
 
 					case 3: { //add new answer to exist question
-						System.out.println("please enter the question number for add new answer: ");
-						//s.nextLine(); // clean the buffer
-
+						System.out.println(systemManager.getSystemAllQuestions().toString());//view the data
+						System.out.println("please enter the question number for add new answer: \n");
+						
 						int questionChoice = s.nextInt();
 
 						boolean flag = true;
@@ -69,16 +72,21 @@ public class main {
 							s.nextLine(); // clean the buffer
 							System.out.println("Please enter the answer text");
 							String answerText = s.nextLine();
+							
 							System.out.println("this is the right answer? (enter true or false)");
-
 							boolean isTheRightAnswer = s.nextBoolean();
+							
+							Answer ans = new Answer(answerText, isTheRightAnswer);
+							if(isTheRightAnswer = true) {
+								systemManager.checkIfAnotherTrueAnswer(questionChoice, ans);
+							}
 
 							systemManager.addNewAnswer(questionChoice, answerText, isTheRightAnswer);
 
 							System.out.println("would you like to add another answer? ");
 							flag = checkIfToDo();
 						}
-						System.out.println("If you finish to add answers, press 10 to save your answers in the system!");
+						System.out.println("If you finish to add answers, press 9 to save your answers in the system!");
 						break;
 					}
 
@@ -201,27 +209,14 @@ public class main {
 						break;
 					}
 
-
-					case 9:{ //load question and answers from file
-						//System.out.println("Would you like to see the loading file protocol (true \\ false) ?");
-						//if (s.nextBoolean())
-							//systemManager.getLoadSaveQuestionsProtocol();
-						//System.out.println("please enter file name");
-						String fileNamePath = "C:\\Java\\project1\\java_sumbitted\\questions_list_2020-09-15.txt"; //s.next(); //write the all path 
-						systemManager.loadQuestionFromFile(fileNamePath);
-						System.out.println("The loading process was successful");
-						break;
-					}
-
-
-					case 10: { // save all question and answer from System to file
+					case 9: { // save all question and answer from System to file
 						String questionFileName = "questions_list_ "+ now + ".txt";
 						systemManager.saveQuestionToFile();
 						System.out.println("A new file named: "+ questionFileName + " was create!, and you have there some questions..");
 						break;
 					}
 					
-					case 11: {
+					case 10: {
 						if(systemManager.getSystemAllQuestions().size() == 0) {
 							throw new noQuestionsInTheList();
 						}

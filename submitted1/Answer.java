@@ -20,7 +20,6 @@ public class Answer  implements Cloneable  {
 		setIsTheAnswer(isTheAnswer);
 	}
 
-
 	public String getAnswerText(){
 		return answerText;
 	}
@@ -42,7 +41,7 @@ public class Answer  implements Cloneable  {
 	}
 
 	public String toString() {
-		return (answerText + "\t\t" + isTheAnswer);
+		return (answerText + "\t " + isTheAnswer);
 	}
 
 	@Override

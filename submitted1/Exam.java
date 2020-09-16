@@ -37,7 +37,7 @@ public class Exam {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i< allQuestions.size() ; i ++ ){
-            sb.append(allQuestions.get(i).toString() + "\n");
+            sb.append((i+1) + " . " + allQuestions.get(i).toString() + "\n");
         }
         return  sb.toString();
     }
