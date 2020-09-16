@@ -1,0 +1,37 @@
+3
+who is moses?
+4
+leader
+true
+thief
+false
+runner
+true
+swwimer
+false
+how old u are
+9
+18
+false
+25
+true
+22
+false
+swwimer
+false
+thief
+false
+runner
+true
+18
+false
+25
+true
+22
+false
+you have brothers?
+2
+yes
+true
+no
+false

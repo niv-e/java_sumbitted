@@ -1,5 +1,10 @@
 package Daniel_Niazov;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Exam {
@@ -32,6 +37,28 @@ public class Exam {
     public Vector<Question> getAllQuestions() {
 		return allQuestions;
 	}
+
+	public void saveExam() throws IOException {
+        LocalDate now = LocalDate.now(Clock.systemDefaultZone());
+        String questionFileName = "Random_exam "+ now + ".txt";
+        File examFile = new File(questionFileName);
+        examFile.createNewFile();
+        PrintWriter pw = new PrintWriter(examFile);
+        pw.println(allQuestions.size());
+
+        for(int i = 0; i< allQuestions.size() ; i++){
+            pw.println(allQuestions.get(i).getQuestionText());
+            pw.println(allQuestions.get(i).getAllAnswers().size());
+            for(int j = 0; j< allQuestions.get(i).getAllAnswers().size() ; j++){
+                pw.println(allQuestions.get(i).getAllAnswers().get(j).getAnswerText());
+                if(!(allQuestions.get(i).getAllAnswers().get(j) instanceof OpenAnswer)) {
+                    pw.println(allQuestions.get(i).getAllAnswers().get(j).isTheAnswer());
+                }
+            }
+        }
+        pw.close();
+    }
+
 
     public String toString(){
         StringBuilder sb = new StringBuilder();

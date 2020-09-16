@@ -3,8 +3,9 @@ import exceptions.AnswerNotFoundException;
 
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.Vector;
 
-public class Answer  implements Cloneable  {
+public class Answer implements Cloneable  {
 
 	private String answerText;
 	private boolean isTheAnswer;

@@ -37,9 +37,8 @@ public class main {
 			System.out.println("press 6 to Delete answer to question");
 			System.out.println("press 7 to Delete question (with answers)");
 			System.out.println("press 8 to to move to handle write mood");
-			System.out.println("press 9 to to save all Questions and answers that you have entered");
+			System.out.println("press 9 to save all Questions and answers that you have entered");
 			System.out.println("press 10 to create exam from random questions ");
-			
 			System.out.println("press 0 to Exit");
 			System.out.println("enter your choice-->");
 
@@ -183,11 +182,12 @@ public class main {
 						System.out.println("Please enter the open question text");
 						for (int i = 0 ; i < numOfOpenQuestionRes ; i ++ ) {
 							System.out.println("open question number " + (i+1) + " of " + numOfOpenQuestionRes);
-							String oq = s.next();							
+							s.nextLine();
+							String oq = s.nextLine();							
 							OpenQuestion q = new OpenQuestion(oq);
-							System.out.println("q value: " + q);
 							e.getAllQuestions().add(q);
 							System.out.println(e.getAllQuestions().toString());
+							
 						}
 
 
@@ -216,6 +216,7 @@ public class main {
 					}
 
 					case 9: { // save all question and answer from System to file
+
 						String questionFileName = "questions_list_ "+ now + ".txt";
 						systemManager.saveQuestionToFile();
 						System.out.println("A new file named: "+ questionFileName + " was create!, and you have there some questions..");
@@ -229,7 +230,7 @@ public class main {
 						System.out.println("How many questions you want in the random exam? ");
 						int randomQuestions = s.nextInt();
 						Exam e = systemManager.pickRandomQuestions(randomQuestions);
-						System.out.println(e);
+						e.saveExam();
 						break;
 					}
 
