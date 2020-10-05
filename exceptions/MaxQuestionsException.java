@@ -1,5 +1,6 @@
 package exceptions;
-
+//work with niv eliahu
+//207437997
 public class MaxQuestionsException extends  Exception{
     public MaxQuestionsException(String msg){
         super(msg);

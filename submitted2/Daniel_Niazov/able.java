@@ -1,13 +1,13 @@
 package Daniel_Niazov;
-//work with niv eliahu
-//207437997
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import exceptions.MaxAnswerException;
 import exceptions.noEnoughAnswers;
 
-public interface systemManagerViewAble {
+public interface able {
+
 	public boolean addNewQuestionToExam(String questionText);
 	public boolean addNewQuestionToSystem(String questionText);
 	public boolean updateQuestion(int numOfQuestion , String questionText) throws ArrayIndexOutOfBoundsException;
@@ -26,6 +26,5 @@ public interface systemManagerViewAble {
 	public Exam pickRandomQuestions(int numOfQuestion) throws CloneNotSupportedException, noEnoughAnswers, MaxAnswerException;
 	public boolean checkIfAnotherTrueAnswer(int numOfQues ,Answer answer) throws Exception;
 	public boolean getIfTheRightAnswer(int numOfQuestion, int numOfAnswer);
-	 
 	 
 }

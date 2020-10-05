@@ -1,5 +1,6 @@
-package submitted1;
-
+package Daniel_Niazov;
+//work with niv eliahu
+//207437997
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,11 +13,22 @@ public class Exam {
 	private Vector<Question> allQuestions = new Vector<Question>();
     private int numOfCurrentQuestion = allQuestions.size();
 	private int numOfQuestion;
-    LocalDate now = LocalDate.now(Clock.systemDefaultZone());
+	private OpenQuestion openQuestion;
 
+
+    Scanner s = new Scanner(System.in);
 
     public Exam(int numOfQuestion){
         this.numOfQuestion = numOfQuestion;
+    }
+
+    public void addOpenQuestion(String questionText){
+        openQuestion = new OpenQuestion(questionText);
+    }
+
+    public boolean addQuestion(String questionText) {
+        allQuestions.add(new Question(questionText));
+        return true;
     }
 
     public void addQuestion(Question question){
@@ -28,7 +40,8 @@ public class Exam {
 	}
 
 	public void saveExam() throws IOException {
-        String questionFileName = "Exam " + now + ".txt";
+        LocalDate now = LocalDate.now(Clock.systemDefaultZone());
+        String questionFileName = "Random_exam "+ now + ".txt";
         File examFile = new File(questionFileName);
         examFile.createNewFile();
         PrintWriter pw = new PrintWriter(examFile);
@@ -47,19 +60,6 @@ public class Exam {
         pw.close();
     }
 
-    public void saveExamSolutions() throws IOException {
-        String solutionsFileName =  "Solution " + now + ".txt";
-        File solutionsFile = new File(solutionsFileName);
-        solutionsFile.createNewFile();
-        PrintWriter pw = new PrintWriter(solutionsFile);
-        for(int i = 0 ; i <allQuestions.size() ; i++){
-            for(Answer a : allQuestions.get(i).getAllAnswers()){
-                pw.println(a);
-
-            }
-        }
-        pw.close();
-    }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();

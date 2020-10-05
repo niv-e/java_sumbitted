@@ -1,9 +1,6 @@
-package submitted1;
-//***************************************
-//* 	submitted by:					*
-//*	Daniel naizon 	 ID:				*
-//*	Niv eliyahu 	 ID: 206338196		*
-//***************************************
+package Daniel_Niazov;
+//work with niv eliahu
+//207437997
 import exceptions.MaxAnswerException;
 import exceptions.noEnoughAnswers;
 import exceptions.noQuestionsInTheList;
@@ -29,7 +26,7 @@ public class main {
 
 		SystemManager systemManager = new SystemManager();
 		//load question and answers from file
-		String fileNamePath = "questions_list_ 2020-09-16.txt"; // hey user, change here to your computer path. /*C:\Java\project1\java_sumbitted\*/
+		String fileNamePath = "C:\\Java\\project1\\java_sumbitted\\questions_list_ 2020-09-16.txt"; // hey user, change here to your computer path.
 		systemManager.loadQuestionFromFile(fileNamePath);
 		System.out.println("all questions from the system loaded succesfully \n");
 
@@ -46,11 +43,10 @@ public class main {
 			System.out.println("press 9 to save all Questions and answers that you have entered");
 			System.out.println("press 10 to create exam from random questions ");
 			System.out.println("press 0 to Exit");
+			System.out.println("enter your choice-->");
 
 			try {
-				System.out.println("enter your choice-->");
 				choice = s.nextInt();
-				s.nextLine();
 
 				switch (choice) { //show all Questions and Answers on System manager
 					case 1: {
@@ -59,6 +55,7 @@ public class main {
 					}
 
 					case 2: { //add a new question
+						s.nextLine(); // clean the buffer
 						System.out.println("Please enter question text: ");
 						String questionText = s.nextLine();
 						systemManager.addNewQuestionToSystem(questionText);
@@ -67,7 +64,7 @@ public class main {
 					}
 
 					case 3: { //add new answer to exist question
-						System.out.println(systemManager.toString());//view the data
+						System.out.println(systemManager.getSystemAllQuestions().toString());//view the data
 						System.out.println("please enter the question number for add new answer: \n");
 						
 						int questionChoice = s.nextInt();
@@ -149,7 +146,6 @@ public class main {
 							int numOfQuestionRes = s.nextInt();
 							System.out.println("how many open questions you would like to add? ");
 							int numOfOpenQuestionRes = s.nextInt();
-							s.nextLine();
 							System.out.println(systemManager.toString());
 							Exam e = systemManager.handleCreateExam(numOfQuestionRes+numOfOpenQuestionRes);
 						
@@ -157,40 +153,23 @@ public class main {
 							System.out.println("Please enter the number of the question that you would like to add  :");
 							System.out.println("press 0 to stop the adding ");
 							int questionChoice = s.nextInt();
+							
 
-
-							if(!(systemManager.addQuestionToExam(e,questionChoice))) {
-								System.out.println("Question is already exist");
-							}
+							int counter;
+						
+							systemManager.addQuestionToExam(e,questionChoice);
 							systemManager.showAnswerForSelectedQuestion(questionChoice);
 							
 							System.out.println("select how many answers you want to add (press 0 to end selecting) ");
-							int numOfAnswersToAdd = s.nextInt();
-							s.nextLine();
-							int numOfAnswerOfCurrentQuestion =systemManager.getNumOfAnswer(questionChoice);
-
-							while(numOfAnswersToAdd > numOfAnswerOfCurrentQuestion) {
-								System.out.println("Invalid value! maximum number of answer is: " + numOfAnswerOfCurrentQuestion);
-								System.out.println("Please enter again how many answers you want to add");
-								numOfAnswersToAdd = s.nextInt();
-								s.nextLine();
-							}
-
+							int numOfTotalAnswers = s.nextInt();
+							
 							int counter1 = 0;
-							while (counter1 < numOfAnswersToAdd) {
+							while (counter1 < numOfTotalAnswers) {
 								System.out.println("Enter the num of answer: ");
 								int numOfAnswerToAdd = s.nextInt();
-								s.nextLine();
-								if(systemManager.addAnswerToLastQuestion(e, questionChoice, numOfAnswerToAdd)) {
-									counter1++;
-								}
-								else{
-									System.out.println("Answer is already exist");
-								}
+								systemManager.addAnswerToLastQuestion(e, questionChoice, numOfAnswerToAdd);	
+								counter1++;
 							}
-							System.out.println("Waiting for the next question...");
-
-
 							String standardAnswer1 = "none of the above";
 							boolean standard_1_isRight = false;
 							String standardAnswer2 = "More than one answer correctly";
@@ -206,16 +185,35 @@ public class main {
 						System.out.println("Please enter the open question text");
 						for (int i = 0 ; i < numOfOpenQuestionRes ; i ++ ) {
 							System.out.println("open question number " + (i+1) + " of " + numOfOpenQuestionRes);
-							//s.nextLine();
+							s.nextLine();
 							String oq = s.nextLine();							
 							OpenQuestion q = new OpenQuestion(oq);
 							e.getAllQuestions().add(q);
 							System.out.println(e.getAllQuestions().toString());
 							
 						}
-						e.saveExam();
+
+
+						String fileName1 = "exam" + now +".txt";
+						File file1 = new File(fileName1);
+						file1.createNewFile();
+						PrintWriter pw1 = new PrintWriter(file1);
+						
+						String fileName2 = "Answers" + now + ".txt";
+						File file2 = new File(fileName2);
+						file2.createNewFile();
+						PrintWriter pw2 = new PrintWriter(file2);
+
+						System.out.println(e);
+						pw1.println(e.toString());
+						
+						for(int i = 0; i < numOfQuestionRes; i++) {
+							pw2.println(e.getAllQuestions().get(i).getAllAnswers().toString());
+						}
+
+						pw1.close();
+						pw2.close();
 						System.out.println("A new exam file was create");
-						e.saveExamSolutions();
 						System.out.println("A new answers file was create");
 						break;
 					}
@@ -258,7 +256,6 @@ public class main {
 
 			} catch (InputMismatchException e) {
 				System.out.println("Input Mismatch exception ");
-				s.nextLine();
 			}
 			catch (MaxAnswerException e){
 				System.out.println(e.getMessage());

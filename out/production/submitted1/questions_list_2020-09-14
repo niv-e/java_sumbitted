@@ -1,4 +1,4 @@
-7
+5
 who is niv?
 3
 doctor
@@ -17,7 +17,7 @@ shoemaker
 false
 goldsmite
 false
-how old are you?
+how old u are
 3
 18
 false
@@ -29,10 +29,10 @@ you have brothers?
 2
 yes
 true
-no dont have
+no
 false
 who is moses?
-6
+4
 leader
 true
 thief
@@ -40,18 +40,4 @@ false
 runner
 true
 swwimer
-false
-child
-false
-student
-true
-who is idan?
-2
-nurse
-true
-gelog
-false
-who is eran?
-1
-judger
 false

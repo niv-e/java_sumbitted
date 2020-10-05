@@ -1,6 +1,0 @@
-judger	(false)
-none of the above	(false)
-More than one answer correctly	(false)
-leader	(true)
-none of the above	(false)
-More than one answer correctly	(false)

@@ -1,34 +1,28 @@
-4
-how old u are
-6
-18
-false
-25
-true
-22
-false
-18
-false
-25
-true
-22
-false
-who is moses?
 3
-swwimer
-false
-runner
+who is moses?
+4
+leader
 true
 thief
 false
-who is daniel?
-6
-proffesor
+runner
 true
-shoemaker
+swwimer
 false
-goldsmite
+how old u are
+9
+18
 false
+25
+true
+22
+false
+swwimer
+false
+thief
+false
+runner
+true
 18
 false
 25

@@ -1,5 +1,6 @@
-package submitted1;
-
+package Daniel_Niazov;
+//work with niv eliahu
+//207437997
 import exceptions.AnswerNotFoundException;
 
 import java.util.Comparator;
@@ -10,6 +11,8 @@ public class Answer implements Cloneable  {
 
 	private String answerText;
 	private boolean isTheAnswer;
+
+	Scanner s = new Scanner(System.in);
 
 	public Answer(String answerText) {
 		setAnswerText(answerText);

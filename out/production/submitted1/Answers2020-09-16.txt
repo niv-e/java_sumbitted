@@ -1,2 +1,0 @@
-[25	(true), none of the above	(false), More than one answer correctly	(false)]
-[child	(false), swwimer	(false), none of the above	(false), More than one answer correctly	(false)]

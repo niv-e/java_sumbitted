@@ -1,4 +1,4 @@
-package submitted1;
+package Daniel_Niazov;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -8,10 +8,7 @@ public class check {
 	
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
-
-
-
-
+		
 //		System.out.println("enter num");
 //		int num = s.nextInt();
 //		System.out.println("enter name");
@@ -27,13 +24,11 @@ public class check {
 //		System.out.println(allQuestions.toString());
 		
 		
-//		Random rand = new Random();
-//
-//        for(int i = 0; i < 50; i++) {
-//        	System.out.println(rand.nextInt(5) + 1);
-//	}
-
-
+		Random rand = new Random();
+        	
+        for(int i = 0; i < 50; i++) {
+        	System.out.println(rand.nextInt(5) + 1);
 	}
+}	    
 }	
 
