@@ -1,5 +1,6 @@
 package Daniel_Niazov;
-
+//work with niv eliahu
+//207437997
 public class OpenAnswer extends Answer {
 	private boolean isTrue = true;
 	

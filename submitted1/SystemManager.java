@@ -1,7 +1,10 @@
 package Daniel_Niazov;
+//work with niv eliahu
+//207437997
 
 import exceptions.MaxAnswerException;
 import exceptions.noEnoughAnswers;
+import listeners.SysManEventListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
@@ -21,11 +25,16 @@ public class SystemManager implements able {
     private Vector<Question> systemAllQuestions = new Vector<Question>();
     LocalDate now = LocalDate.now(Clock.systemDefaultZone());
 
+    private ArrayList<SysManEventListener> allListeners;
 
-
-    public SystemManager(){
+    public SystemManager() {
         exam = new Exam(MAX_NUM_OF_QUESTIONS);
+        allListeners = new ArrayList<SysManEventListener>();
     }
+    
+    public void registerListener(SysManEventListener l) {
+		allListeners.add(l);
+	}
 
     public boolean addNewQuestionToExam(String questionText){
         exam.getAllQuestions().add(new Question(questionText));
@@ -147,30 +156,7 @@ public class SystemManager implements able {
             }
         }
     }
-/*
-    public void getLoadSaveQuestionsProtocol(){
-        System.out.println("first line in file is the number of question on file");
-        System.out.println("for each question below save first the Question text");
-        System.out.println("line after the number of answers of the question");
-        System.out.println("line after the answer text ");
-        System.out.println("line after the true of false ");
-        System.out.println("Example: ");
-        System.out.println("2 (number of question on this file)");
-        System.out.println("how old you are? (question one text)");
-        System.out.println("2 (number of answers) ");
-        System.out.println("18 (answer one) ");
-        System.out.println("false ()");
-        System.out.println("25 (answer two) ");
-        System.out.println("true ()");
-        System.out.println("are you student? (question two text)");
-        System.out.println("2 (number of answers) ");
-        System.out.println("yes (answer one) ");
-        System.out.println("true ()");
-        System.out.println("no (answer two) ");
-        System.out.println("false ()");
-
-    }
-*/
+    
     public int getRandomInRange(int min ,int max){
     	if(min >= max) {
     		throw new IllegalArgumentException("min grader than max ");
@@ -225,19 +211,18 @@ public class SystemManager implements able {
             }
 
         }
-
-     //   numberOfAnswerToAdd = 4;
-
-     //   if(haveEnoughAnswers < numberOfAnswerToAdd) {
-        //	throw new noEnoughAnswers(numberOfAnswerToAdd - haveEnoughAnswers);
-         //   //System.out.println("throws noEnough");
-    //    }
-        
-        	return e;
+   
+        return e;
         }
-        
     
-
+    public Exam createExamFromRandomQuestions() {
+    	final int min = 1;
+    	int max = systemAllQuestions.size();
+    	int numOfQuestions = getRandomInRange(min, max);
+    	Exam exam = new Exam(numOfQuestions);
+    	return exam;
+    }
+        
 
     public boolean checkIfAnotherTrueAnswer(int numOfQues ,Answer answer) throws Exception {
 		for(int i = 0; i < systemAllQuestions.get(numOfQues).getAllAnswers().size(); i++) {
