@@ -1,0 +1,61 @@
+7
+who is david?
+3
+programmer
+true
+doctor
+false
+nurse
+false
+who is niv?
+4
+engineer
+true
+proffesor
+false
+lawyer
+false
+mechanical
+false
+who is daniel?
+2
+rabbi
+true
+shoemaker
+false
+who is idan?
+4
+painter
+false
+thief
+false
+geoloog
+true
+gembler
+false
+who is moshe?
+3
+leader
+true
+slave
+false
+farmer
+false
+who is koko?
+3
+guide
+false
+superman
+true
+spiderman
+false
+who is momo?
+4
+driver
+false
+cleaner
+true
+teacher
+false
+builder
+false
