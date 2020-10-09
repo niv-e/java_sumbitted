@@ -162,29 +162,35 @@ public class SystemManager implements able {
     public void loadQuestionFromFile(String filePath) throws MaxAnswerException, FileNotFoundException{
         File loadedFile = new File(filePath);
         System.out.println("is file exist? " + loadedFile.exists());
-    	Scanner sf = new Scanner(loadedFile);
-        int numOfQuestionInFile = sf.nextInt();
-        sf.nextLine();
-        int numOfAnswerOfCurrentQuestion;
-
-        for(int i=0 ; i< numOfQuestionInFile ; i++){
-            Question q = new Question(sf.nextLine());
-            numOfAnswerOfCurrentQuestion = sf.nextInt();
-            sf.nextLine();
-            for(int j = 0 ; j< numOfAnswerOfCurrentQuestion ; j++){
-                String currentAnswerText = sf.nextLine();
-                boolean currentAnswerResults = sf.nextBoolean();
-                sf.nextLine();
-                Answer a = new Answer(currentAnswerText,currentAnswerResults);
-                q.addNewAnswer(a);
-                for (SysManEventListener l : allListeners) {
-            		l.loadQuestionFromFileToModelEvent(filePath);
-            	}
-            }
-            if (!(systemAllQuestions.contains(q))) {//check if the question is already exists on the system
-                systemAllQuestions.add(q);
-            }
-        }
+        Scanner sf = new Scanner(loadedFile);
+    	try{
+				int numOfQuestionInFile = sf.nextInt();
+				sf.nextLine();
+				int numOfAnswerOfCurrentQuestion;
+	
+				for(int i=0 ; i< numOfQuestionInFile ; i++){
+				    Question q = new Question(sf.nextLine());
+				    numOfAnswerOfCurrentQuestion = sf.nextInt();
+				    sf.nextLine();
+				    for(int j = 0 ; j< numOfAnswerOfCurrentQuestion ; j++){
+				        String currentAnswerText = sf.nextLine();
+				        boolean currentAnswerResults = sf.nextBoolean();
+				        sf.nextLine();
+				        Answer a = new Answer(currentAnswerText,currentAnswerResults);
+				        q.addNewAnswer(a);
+				    
+				        
+			    }
+			    if (!(systemAllQuestions.contains(q))) {//check if the question is already exists on the system
+			        systemAllQuestions.add(q);
+			    }
+			 
+			}for (SysManEventListener l : allListeners) {
+			    l.loadQuestionFromFileToModelEvent(filePath);
+			}
+    	}catch(Exception e) {
+    		System.out.println(e.getMessage());
+    	}
     }
     
     public int getRandomInRange(int min ,int max){
@@ -294,7 +300,7 @@ public class SystemManager implements able {
                 sb.append(systemAllQuestions.get(i).toString() + "\n");
             }
             for (SysManEventListener l : allListeners) {
-        		l.showAllQuestionsAndAnswersFromModelEvent();
+//        		l.showAllQuestionsAndAnswersFromModelEvent();
         	}
             return sb.toString();
         }

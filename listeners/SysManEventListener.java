@@ -13,6 +13,6 @@ public interface SysManEventListener {
 	public void deleteAnswerFromModelEvent(int numOfQuestion, int numOfAnswer);
 	public submittd1.Exam createExamFromRandomQuestionsFromModelEvent(int numOfQuestions);
 	public void loadQuestionFromFileToModelEvent(String filePath);
-	public void showAllQuestionsAndAnswersFromModelEvent();
+//	public void showAllQuestionsAndAnswersFromModelEvent();
 	public void FireSuccesfullAdding();
 }

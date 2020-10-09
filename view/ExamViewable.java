@@ -18,6 +18,6 @@ public interface ExamViewable {
 	Exam createRandomExamToUI(int numOfQuestions);
 	void saveQuestionToFileToUI();
 	void loadQuestionsAndAnswersFromFile(String filePath);
-	void printAllQuestionsAndAnswersToUI();
+	void printAllQuestionsAndAnswersToUI(String toShow);
 	void addingData();
 }

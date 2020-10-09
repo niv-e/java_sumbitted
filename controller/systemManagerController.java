@@ -1,20 +1,20 @@
 package controller;
 
-import java.io.FileNotFoundException;
-
 import exceptions.MaxAnswerException;
 import listeners.SysManEventListener;
 import listeners.SysManUIEventsListener;
 import submittd1.Exam;
 import view.ExamViewable;
 
+import java.io.FileNotFoundException;
 
-public class systemMnagerController implements SysManEventListener, SysManUIEventsListener{
+
+public class systemManagerController implements SysManEventListener, SysManUIEventsListener{
 	
 	private submittd1.SystemManager theModel;
 	private ExamViewable theView;
 	
-	public systemMnagerController(submittd1.SystemManager m, ExamViewable v) {
+	public systemManagerController(submittd1.SystemManager m, ExamViewable v) {
 		theModel = m;
 		theView = v;
 		
@@ -64,10 +64,19 @@ public class systemMnagerController implements SysManEventListener, SysManUIEven
 		return theView.createRandomExamToUI(numOfQuestions);	
 	}
 
+//	@Override
+//	public void showAllQuestionsAndAnswersFromModelEvent() {
+//		String questionText = theModel.toString();
+//		theView.printAllQuestionsAndAnswersToUI(questionText);	
+//	}
+//	
+
 	@Override
-	public void showAllQuestionsAndAnswersFromModelEvent() {
-		theView.printAllQuestionsAndAnswersToUI();	
+	public void printAllQuestionsAndAnswersToUI() {
+		String questionText = theModel.toString();
+		theView.printAllQuestionsAndAnswersToUI(questionText);	
 	}
+
 	
 	@Override
 	public void loadQuestionFromFileToModelEvent(String filePath) {
@@ -121,15 +130,9 @@ public class systemMnagerController implements SysManEventListener, SysManUIEven
 	
 	@Override
 	public void viewLoadQuestionFromFile(String filePath) throws FileNotFoundException, MaxAnswerException {
-		theModel.loadQuestionFromFile(filePath);
-		
+		theModel.loadQuestionFromFile(filePath);		
 	}
 	
-	@Override
-	public String printAllQuestionsAndAnswersToUI() {
-		return theModel.toString();
-	}
-
 	
 
 	

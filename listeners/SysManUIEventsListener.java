@@ -15,6 +15,6 @@ public interface SysManUIEventsListener {
 	submittd1.Exam viewCreateHandleExam(int numOfQuestion);//4
 	submittd1.Exam viewCreateRandomExam(int numOfQuestions);
 	void viewLoadQuestionFromFile(String filePath) throws FileNotFoundException, MaxAnswerException;
-	String printAllQuestionsAndAnswersToUI();
+	void printAllQuestionsAndAnswersToUI();
 	
 }

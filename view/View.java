@@ -15,9 +15,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -32,110 +34,149 @@ import javafx.stage.Stage;
 import listeners.SysManUIEventsListener;
 import submittd1.Exam;
 
-	public class View implements ExamViewable /*extends Application*/ {
+	public class View implements ExamViewable{
 		private Desktop desktop = Desktop.getDesktop();
 		private Vector<SysManUIEventsListener> allListeners = new Vector<SysManUIEventsListener>();
-		
+		Vector<Button> leftVboxButtons = new Vector<Button>();
+		Vector <Node> centerNodes = new Vector <Node>();
 
+		BorderPane bpRoot;
+		VBox leftVbRoot;
+		HBox addQuestionHBox;
+		
+		//Create operator
+		FileChooser fileChooser = new FileChooser();
+		
+		Label topLabel;
+		Label lblLoadQuestion;
+		
+		Button loadFromFile;
+		Button showAllQuestion;
+		Button addNewQuestion;
+		Button btnSaveQuestion;
+		Button addNewAnswer;
+		Button deleteQuestion;
+		Button deleteAnswer;
+		
+		TextField tfQuestion;
+		
+		TextArea area ;
+		
 		public View(Stage theStage) {
 			final int BUTTON_SIZE = 250;
 			theStage.setTitle("Exam Manager");
-			BorderPane bpRoot = new BorderPane();
+			topLabel = new Label ("Welcome to Exam manager");
+			area = new TextArea();
+			area.setVisible(false);
+
+
+			bpRoot = new BorderPane();
 			bpRoot.setBackground(new Background(new BackgroundFill(Color.BURLYWOOD, CornerRadii.EMPTY, Insets.EMPTY)));
 	
 
-			VBox leftVbRoot = new VBox();
+			leftVbRoot = new VBox();
 			leftVbRoot.setSpacing(10);
 			leftVbRoot.setPadding(new Insets (10));
 
-			//Create operator
-			FileChooser fileChooser = new FileChooser();
+			addQuestionHBox = new HBox();
+			addQuestionHBox.setSpacing(20);			
+			
+	
+			addNewAnswer = new Button("Add new answer");
+			deleteQuestion = new Button("Delete question");
+			deleteAnswer = new Button("Delete answer");
+		
+		
+			
+			centerNodes.add(addQuestionHBox);
+			centerNodes.add(lblLoadQuestion);
+			centerNodes.add(area);
+			
+			
+			bpRoot.setTop(topLabel);
+			bpRoot.setLeft(leftVbRoot);
+			bpRoot.setCenter(lblLoadQuestion);
+	
+			
 			fileChooser.setTitle("Load exist Questions");
+			lblLoadQuestion = new Label();
+			
+			loadFromFile = new Button("Load from file");
+			loadFromFile.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent e) {
+					try {					
+						for(SysManUIEventsListener l :allListeners) {
+							String filePath = fileChooser.showOpenDialog(theStage).getAbsolutePath();
+							l.viewLoadQuestionFromFile(filePath);
+							}	
+					}catch (Exception e1) {
+						System.out.println(e1.getMessage());
+						e1.printStackTrace();
+					}
+				}
+			
+			});
 
-			Vector<Button> leftVboxButtons = new Vector<Button>();
-
-			Button showAllQuestion = new Button ("Show all current question");
-			leftVboxButtons.add(showAllQuestion);
+			showAllQuestion = new Button ("Show all current question");
 			showAllQuestion.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent e) {
-					try {
-						allListeners.get(0).viewLoadQuestionFromFile("C:\\\\Java\\\\Sproject\\\\questions_list_ 2020-10-07.txt");
-						Label lblString = new Label(allListeners.get(0).printAllQuestionsAndAnswersToUI()); 
-						lblString.setAlignment(Pos.CENTER_LEFT);
-						bpRoot.setCenter(lblString);
-					} catch (FileNotFoundException | MaxAnswerException e1) {
-						System.out.println(e1.getMessage());
-						e1.printStackTrace();
-					}	
-					//configureFileChooser(fileChooser);
-					//File file = fileChooser.showOpenDialog(theStage);
-					//if (file != null) {
-					//	openFile(file);
-					//}
-				}
-			});
-			HBox addQuestion = new HBox();
-			addQuestion.setSpacing(20);
-			Button addNewQuestion = new Button("Add new Question");
-			leftVboxButtons.add(addNewQuestion);
+						for(SysManUIEventsListener l :allListeners) {
+							l.printAllQuestionsAndAnswersToUI();
+							}	
+				}	
+			});	
 			
 			
+			addNewQuestion = new Button("Add new Question");
+			tfQuestion = new TextField("");
+			btnSaveQuestion = new Button("Save question");
+			
+			addQuestionHBox.getChildren().addAll(tfQuestion, btnSaveQuestion);
+			addQuestionHBox.setVisible(false);
+
 			addNewQuestion.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent e) {
-					TextField tfQuestion = new TextField();
-					Button btnAddNewQuestion = new Button("Add question");
-					tfQuestion.setText("");
-					addQuestion.getChildren().addAll(tfQuestion, btnAddNewQuestion);
-					//bpRoot.setCenter(tfQuestion);
-					//allListeners.get(0).viewAddingQuestion(tfQuestion.getText());
-					//tfQuestion.setAlignment(Pos.CENTER);
-					//tfQuestion.setText("");
-					//bpRoot.setCenter(tfQuestion);
-				
-					btnAddNewQuestion.setOnAction(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent e) {
-							allListeners.get(0).viewAddingQuestion(tfQuestion.getText());
-							addingData();
-						//	bpRoot.setCenter(btnAddNewQuestion);			
-						}
-					});
+					bpRoot.setCenter(addQuestionHBox);
+					if(!addQuestionHBox.isVisible()) {
+						addQuestionHBox.setVisible(true);
+					}
+					else {
+						addQuestionHBox.setVisible(false);
+					}
 				}
 			});	
 			
-			Button addNewAnswer = new Button("Add new answer");
-			leftVboxButtons.add(addNewAnswer);
-			Button deleteQuestion = new Button("Delete question");
-			leftVboxButtons.add(deleteQuestion);
-			Button deleteAnswer = new Button("Delete answer");
-			leftVboxButtons.add(deleteAnswer);
+			btnSaveQuestion.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent e) {
+					for(SysManUIEventsListener l :allListeners) {
+						l.viewAddingQuestion(tfQuestion.getText());
+					tfQuestion.setText("");
+					JOptionPane.showMessageDialog(null, "A new question was added to the system");
+					}
+				}
+			});
 
+
+			leftVboxButtons.add(loadFromFile);
+			leftVboxButtons.add(showAllQuestion);
+			leftVboxButtons.add(addNewQuestion);
+			leftVboxButtons.add(addNewAnswer);
+			leftVboxButtons.add(deleteQuestion);
+			leftVboxButtons.add(deleteAnswer);
+			
 			for(Button b : leftVboxButtons){
 				b.setMaxWidth(BUTTON_SIZE);
+//				System.out.println(b.isVisible());
 			}
-
+			
 			//adding the file chooser to the vbox.
 			for(int i=0 ; i<leftVboxButtons.size() ; i++){
 				leftVbRoot.getChildren().add(leftVboxButtons.get(i));
-
 			}
-			Label topLabel = new Label ("Welcome to Exam manager");
-			//Button saveQuestion = new Button("save");
-			
-
-			//HBox addQuestion = new HBox();
-			//addQuestion.setSpacing(20);
-			
-				
-			bpRoot.setTop(topLabel);
-			bpRoot.setLeft(leftVbRoot);
-			bpRoot.setCenter(addQuestion);
-			//bpRoot.setCenter(addNewQuestion);
-
-			//bpRoot.getCenter().visibleProperty().setValue(false);
-			
 		
 			theStage.setScene(new Scene(bpRoot, 800, 600));
 			theStage.show();
@@ -147,6 +188,7 @@ import submittd1.Exam;
 					new File(System.getProperty("user.home"))
 			);
 		}
+		
 		private void openFile(File file) {
 			try {
 				desktop.open(file);
@@ -157,7 +199,7 @@ import submittd1.Exam;
 				);
 			}
 		}
-
+		
 		@Override
 		public void registerListener(SysManUIEventsListener listener) {
 			allListeners.add(listener);	
@@ -220,23 +262,35 @@ import submittd1.Exam;
 			// TODO Auto-generated method stub
 			
 		}
+		
 
 		@Override
 		public void loadQuestionsAndAnswersFromFile(String filePath) {
 			// TODO Auto-generated method stub
 			
 		}
-
-		@Override
-		public void printAllQuestionsAndAnswersToUI() {
-			// TODO Auto-generated method stub
-			
+		
+		public void showLoadedFile(String allQuestion) {
+			lblLoadQuestion.setText(allQuestion);
+			lblLoadQuestion.setAlignment(Pos.CENTER_LEFT);
 		}
 
+		@Override
+		public void printAllQuestionsAndAnswersToUI(String dataToShow) {
+			bpRoot.setCenter(area);
+			area.setText(dataToShow);
+			if(!area.isVisible()) {
+				area.setVisible(true);
+			}
+			else {
+				area.setVisible(true);
+			}
+		}
 		
-
-		
-
+		public void turnVisibleOff(Node[] nodeList) {
+			for(Node l : nodeList)
+				l.setVisible(false);			
+		}
 		
 }
 	
